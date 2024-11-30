@@ -565,7 +565,43 @@ export const initialContent = {
       content: [
         {
           type: 'text',
-          text: 'During the one-week deployment, each participant opened an average of 39.3 papers (SD=21) using CiteSee and saved 25.8 papers (SD=12.2) to their paper library Table 1. Participants used both the inline citations and external sources (such as search engines or social recommendations) to explore and save useful papers. While a prior survey found inline citations accounted for around 21% (n=881) of paper discovery during research [33], participants in our field deployment study used CiteSee to discover useful prior work via inline citations around 2.7x more frequently than that. On average, the majority of papers saved in our study came from examining inline citations (57%, n=6, SD=24%, .95CI[32%,82%] Table 1) and the rest came from sources outside of the system that we did not track due to privacy concerns (e.g., web searches or socialsharing.)',
+          text: 'During the one-week deployment, each participant opened an average of 39.3 papers (SD=21) using CiteSee and saved 25.8 papers (SD=12.2) to their paper library ',
+        },
+        {
+          type: 'text',
+          marks: [
+            {
+              type: 'reference',
+              attrs: {
+                id: '49FGAAK',
+                sentence:
+                  'During the one-week deployment, each participant opened an average of 39.3 papers (SD=21) using CiteSee and saved 25.8 papers (SD=12.2) to their paper library.',
+              },
+            },
+          ],
+          text: 'Table 1',
+        },
+        {
+          type: 'text',
+          text: '. Participants used both the inline citations and external sources (such as search engines or social recommendations) to explore and save useful papers. While a prior survey found inline citations accounted for around 21% (n=881) of paper discovery during research [33], participants in our field deployment study used CiteSee to discover useful prior work via inline citations around 2.7x more frequently than that. On average, the majority of papers saved in our study came from examining inline citations (57%, n=6, SD=24%, .95CI[32%,82%]',
+        },
+        {
+          type: 'text',
+          marks: [
+            {
+              type: 'reference',
+              attrs: {
+                id: '90BSALK',
+                sentence:
+                  'On average, the majority of papers saved in our study came from examining inline citations (57%, n=6, SD=24%, .95CI[32%,82%]) and the rest came from sources outside of the system that we did not track due to privacy concerns (e.g., web searches or socialsharing.)',
+              },
+            },
+          ],
+          text: 'Table 1',
+        },
+        {
+          type: 'text',
+          text: ') and the rest came from sources outside of the system that we did not track due to privacy concerns (e.g., web searches or socialsharing.)',
         },
       ],
     },

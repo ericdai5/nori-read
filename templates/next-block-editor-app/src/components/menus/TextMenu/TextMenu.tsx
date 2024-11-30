@@ -60,7 +60,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
       updateDelay={100}
     >
       <Toolbar.Wrapper>
-        <AIDropdown
+        {/* <AIDropdown
           onCompleteSentence={commands.onCompleteSentence}
           onEmojify={commands.onEmojify}
           onFixSpelling={commands.onFixSpelling}
@@ -71,9 +71,9 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
           onTone={commands.onTone}
           onTranslate={commands.onTranslate}
         />
-        <Toolbar.Divider />
+        <Toolbar.Divider /> */}
         <MemoContentTypePicker options={blockOptions} />
-        <MemoFontFamilyPicker onChange={commands.onSetFont} value={states.currentFont || ''} />
+        {/* <MemoFontFamilyPicker onChange={commands.onSetFont} value={states.currentFont || ''} /> */}
         <MemoFontSizePicker onChange={commands.onSetFontSize} value={states.currentSize || ''} />
         <Toolbar.Divider />
         <MemoButton tooltip="Bold" tooltipShortcut={['Mod', 'B']} onClick={commands.onBold} active={states.isBold}>
@@ -95,14 +95,14 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
         >
           <Icon name="Underline" />
         </MemoButton>
-        <MemoButton
+        {/* <MemoButton
           tooltip="Strikehrough"
           tooltipShortcut={['Mod', 'Shift', 'S']}
           onClick={commands.onStrike}
           active={states.isStrike}
         >
           <Icon name="Strikethrough" />
-        </MemoButton>
+        </MemoButton> */}
         <MemoButton tooltip="Code" tooltipShortcut={['Mod', 'E']} onClick={commands.onCode} active={states.isCode}>
           <Icon name="Code" />
         </MemoButton>

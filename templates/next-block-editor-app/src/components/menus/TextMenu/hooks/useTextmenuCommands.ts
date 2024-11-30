@@ -25,36 +25,36 @@ export const useTextmenuCommands = (editor: Editor) => {
 
   const onSimplify = useCallback(
     () => editor.chain().focus().aiSimplify({ stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onEmojify = useCallback(
     () => editor.chain().focus().aiEmojify({ stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onCompleteSentence = useCallback(
     () => editor.chain().focus().aiComplete({ stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onFixSpelling = useCallback(
     () => editor.chain().focus().aiFixSpellingAndGrammar({ stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onMakeLonger = useCallback(
     () => editor.chain().focus().aiExtend({ stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onMakeShorter = useCallback(
     () => editor.chain().focus().aiShorten({ stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onTldr = useCallback(() => editor.chain().focus().aiTldr({ stream: true, format: 'rich-text' }).run(), [editor])
   const onTone = useCallback(
     (tone: string) => editor.chain().focus().aiAdjustTone(tone, { stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onTranslate = useCallback(
     (language: Language) => editor.chain().focus().aiTranslate(language, { stream: true, format: 'rich-text' }).run(),
-    [editor],
+    [editor]
   )
   const onLink = useCallback(
     (url: string, inNewTab?: boolean) =>
@@ -63,7 +63,13 @@ export const useTextmenuCommands = (editor: Editor) => {
         .focus()
         .setLink({ href: url, target: inNewTab ? '_blank' : '' })
         .run(),
-    [editor],
+    [editor]
+  )
+
+  // Updated setRef implementation
+  const onSetRef = useCallback(
+    (ref: string, sentence: string) => editor.chain().focus().setRef({ id: ref, sentence: sentence }).run(),
+    [editor]
   )
 
   const onSetFont = useCallback(
@@ -73,7 +79,7 @@ export const useTextmenuCommands = (editor: Editor) => {
       }
       return editor.chain().focus().setFontFamily(font).run()
     },
-    [editor],
+    [editor]
   )
 
   const onSetFontSize = useCallback(
@@ -83,7 +89,7 @@ export const useTextmenuCommands = (editor: Editor) => {
       }
       return editor.chain().focus().setFontSize(fontSize).run()
     },
-    [editor],
+    [editor]
   )
 
   return {
@@ -115,5 +121,6 @@ export const useTextmenuCommands = (editor: Editor) => {
     onTone,
     onTranslate,
     onLink,
+    onSetRef,
   }
 }

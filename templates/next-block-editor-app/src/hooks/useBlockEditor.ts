@@ -14,6 +14,7 @@ import type { EditorUser } from '../components/BlockEditor/types'
 import { initialContent } from '@/lib/data/sampleText'
 import { Ai } from '@/extensions/Ai'
 import { AiImage, AiWriter } from '@/extensions'
+import { Reference } from '@/extensions/Reference'
 
 declare global {
   interface Window {
@@ -61,6 +62,7 @@ export const useBlockEditor = ({
         ...ExtensionKit({
           provider,
         }),
+        Reference,
         provider && ydoc
           ? Collaboration.configure({
               document: ydoc,
