@@ -1,0 +1,139 @@
+.ProseMirror {
+  @apply caret-black dark:caret-white outline-0 pr-8 pl-20 py-16 z-0 lg:pl-8 lg:pr-8 mx-auto max-w-2xl;
+
+  .selection {
+    @apply inline;
+  }
+
+  .selection,
+  *::selection {
+    @apply bg-black/10 dark:bg-white/20 inline;
+  }
+
+  & > .react-renderer {
+    @apply my-12 first:mt-0 last:mb-0;
+  }
+
+  &.resize-cursor {
+    @apply cursor-col-resize;
+    * {
+      cursor: col-resize !important;
+    }
+  }
+
+  .ProseMirror-gapcursor {
+    @apply relative w-full max-w-2xl mx-auto;
+
+    &:after {
+      @apply border-t-black/40 dark:border-t-white/40 w-full -top-[1.5em] max-w-2xl mx-auto left-0 right-0;
+    }
+  }
+
+  table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: auto !important;
+    margin-left: 12px;
+    position: relative;
+    will-change: width;
+    border-spacing: 0;
+    user-select: none;
+  }
+
+  td,
+  th {
+    padding: 2px 4px;
+    white-space: nowrap;
+    width: auto !important;
+    min-width: 20px !important;
+    position: relative;
+    will-change: width;
+    transform: translateZ(0);
+    transition: none !important;
+  }
+
+  .tableWrapper {
+    padding: 1rem 0;
+    overflow-x: auto;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    transform: translateZ(0);
+  }
+
+  .grip-column,
+  .grip-row {
+    @apply bg-black/20 dark:bg-white/20;
+    position: absolute;
+    z-index: 3;
+    display: none;
+  }
+
+  .grip-column {
+    top: -18px;
+    right: -2px;
+    width: 4px;
+    height: 16px;
+  }
+
+  .grip-row {
+    left: -14px;
+    top: -2px;
+    width: 16px;
+    height: 4px;
+  }
+
+  .grip-column::before,
+  .grip-row::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .grip-row::before {
+    transform: translate(-50%, -50%);
+  }
+
+  .selectedCell {
+    @apply bg-black/5 dark:bg-white/10;
+  }
+
+  table:hover .grip-column,
+  table:hover .grip-row {
+    display: block;
+  }
+
+  .grip-column.selected,
+  .grip-row.selected {
+    @apply bg-black/40 dark:bg-white/40;
+    display: block;
+  }
+
+  .column-resize-handle {
+    position: absolute;
+    top: 0;
+    right: -2px;
+    width: 4px;
+    height: 100%;
+    background-color: transparent;
+    cursor: col-resize;
+    transform: translateZ(0);
+    z-index: 20;
+    touch-action: none;
+  }
+}
+
+[data-theme='slash-command'] {
+  width: 1000vw;
+}
+
+@import './partials/animations.css';
+@import './partials/blocks.css';
+@import './partials/code.css';
+@import './partials/collab.css';
+@import './partials/lists.css';
+@import './partials/placeholder.css';
+@import './partials/table.css';
+@import './partials/typography.css';
