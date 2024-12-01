@@ -2,6 +2,7 @@ import { EditorContent } from '@tiptap/react'
 import React, { useRef } from 'react'
 
 import { LinkMenu } from '@/components/menus'
+import { RefMenu } from '@/components/menus'
 
 import { useBlockEditor } from '@/hooks/useBlockEditor'
 
@@ -51,6 +52,7 @@ export const BlockEditor = ({
         <EditorContent editor={editor} className="flex-1 overflow-y-auto" />
         <ContentItemMenu editor={editor} />
         <LinkMenu editor={editor} appendTo={menuContainerRef} />
+        <RefMenu editor={editor} appendTo={menuContainerRef} />
         <TextMenu editor={editor} />
         <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
         <TableRowMenu editor={editor} appendTo={menuContainerRef} />

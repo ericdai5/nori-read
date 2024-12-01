@@ -36,7 +36,7 @@ export const Reference = Mark.create<ReferenceOptions>({
     return {
       HTMLAttributes: {
         class:
-          'inline-flex items-center px-2 py-1 mx-1 text-sm font-medium rounded bg-gray-100 hover:bg-gray-200 reference-citation',
+          'inline-flex items-center px-2 py-1 mx-1 text-sm font-medium rounded-md bg-gray-100 hover:bg-gray-200 reference-citation',
       },
     }
   },

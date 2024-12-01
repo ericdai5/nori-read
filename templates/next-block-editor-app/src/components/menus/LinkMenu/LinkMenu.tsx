@@ -34,7 +34,7 @@ export const LinkMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
         .run()
       setShowEdit(false)
     },
-    [editor],
+    [editor]
   )
 
   const onUnsetLink = useCallback(() => {
