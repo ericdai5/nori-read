@@ -13,6 +13,7 @@ import { useTextmenuContentTypes } from './hooks/useTextmenuContentTypes'
 import { ContentTypePicker } from './components/ContentTypePicker'
 import { AIDropdown } from './components/AIDropdown'
 import { EditLinkPopover } from './components/EditLinkPopover'
+import { EditRefPopover } from './components/EditRefPopover'
 
 // We memorize the button so each button is not rerendered
 // on every editor state change
@@ -110,6 +111,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
           <Icon name="FileCode" />
         </MemoButton>
         <EditLinkPopover onSetLink={commands.onLink} />
+        <EditRefPopover onSetRef={commands.onRef} />
         <Popover.Root>
           <Popover.Trigger asChild>
             <MemoButton active={!!states.currentHighlight} tooltip="Highlight text">

@@ -67,7 +67,7 @@ export const useTextmenuCommands = (editor: Editor) => {
   )
 
   // Updated setRef implementation
-  const onSetRef = useCallback(
+  const onRef = useCallback(
     (ref: string, sentence: string) => editor.chain().focus().setRef({ id: ref, sentence: sentence }).run(),
     [editor]
   )
@@ -121,6 +121,6 @@ export const useTextmenuCommands = (editor: Editor) => {
     onTone,
     onTranslate,
     onLink,
-    onSetRef,
+    onRef,
   }
 }
