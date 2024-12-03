@@ -6,11 +6,12 @@ import Tooltip from '@/components/ui/Tooltip'
 export type RefPreviewPanelProps = {
   id: string
   onEdit: () => void
-  onView: () => void
   onClear: () => void
+  isRefViewOpen?: boolean
+  toggleRefView?: () => void
 }
 
-export const RefPreviewPanel = ({ onClear, onView, onEdit, id }: RefPreviewPanelProps) => {
+export const RefPreviewPanel = ({ onClear, onEdit, id, isRefViewOpen, toggleRefView }: RefPreviewPanelProps) => {
   return (
     <Surface className="flex items-center gap-2 p-2">
       {/* <a href={id} target="_blank" rel="noopener noreferrer" className="text-sm underline break-all">
@@ -24,7 +25,12 @@ export const RefPreviewPanel = ({ onClear, onView, onEdit, id }: RefPreviewPanel
         </Toolbar.Button>
       </Tooltip>
       <Tooltip title="View reference">
-        <Toolbar.Button onClick={onView}>
+        <Toolbar.Button
+          tooltip={isRefViewOpen ? 'Close reference view' : 'Open reference view'}
+          onClick={toggleRefView}
+          active={isRefViewOpen}
+          className={isRefViewOpen ? 'bg-transparent' : ''}
+        >
           <Icon name="Eye" />
         </Toolbar.Button>
       </Tooltip>

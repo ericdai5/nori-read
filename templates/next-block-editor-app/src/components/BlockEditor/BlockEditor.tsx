@@ -9,6 +9,7 @@ import { useBlockEditor } from '@/hooks/useBlockEditor'
 import '@/styles/index.css'
 
 import { Sidebar } from '@/components/Sidebar'
+import { RefView } from '@/components/RefView'
 import ImageBlockMenu from '@/extensions/ImageBlock/components/ImageBlockMenu'
 import { ColumnsMenu } from '@/extensions/MultiColumn/menus'
 import { TableColumnMenu, TableRowMenu } from '@/extensions/Table/menus'
@@ -16,6 +17,7 @@ import { EditorHeader } from './components/EditorHeader'
 import { TextMenu } from '../menus/TextMenu'
 import { ContentItemMenu } from '../menus/ContentItemMenu'
 import { useSidebar } from '@/hooks/useSidebar'
+import { useRefView } from '@/hooks/useRefView'
 import * as Y from 'yjs'
 import { TiptapCollabProvider } from '@hocuspocus/provider'
 
@@ -31,7 +33,7 @@ export const BlockEditor = ({
   const menuContainerRef = useRef(null)
 
   const leftSidebar = useSidebar()
-  const rightSidebar = useSidebar()
+  const refView = useRefView()
   const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
 
   if (!editor || !users) {
@@ -52,14 +54,19 @@ export const BlockEditor = ({
         <EditorContent editor={editor} className="flex-1 overflow-y-auto" />
         <ContentItemMenu editor={editor} />
         <LinkMenu editor={editor} appendTo={menuContainerRef} />
-        <RefMenu editor={editor} appendTo={menuContainerRef} />
+        <RefMenu
+          editor={editor}
+          appendTo={menuContainerRef}
+          isRefViewOpen={refView.isOpen}
+          toggleRefView={refView.toggle}
+        />
         <TextMenu editor={editor} />
         <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
         <TableRowMenu editor={editor} appendTo={menuContainerRef} />
         <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
         <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
       </div>
-      <Sidebar isOpen={rightSidebar.isOpen} onClose={rightSidebar.close} editor={editor} />
+      <RefView isOpen={refView.isOpen} onClose={refView.close} editor={editor} />
     </div>
   )
 }

@@ -7,6 +7,7 @@ module.exports = {
   safelist: ['ProseMirror'],
   theme: {
     extend: {
+      // overall sans and serif font settings here
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
         serif: ['STIX Two Text', ...defaultTheme.fontFamily.serif],

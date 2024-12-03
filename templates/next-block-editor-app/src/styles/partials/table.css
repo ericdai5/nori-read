@@ -1,6 +1,6 @@
 .ProseMirror {
   .tableWrapper {
-    @apply my-12;
+    @apply my-6;
   }
 
   table {
@@ -11,13 +11,16 @@
     th {
       @apply border border-black/10 min-w-[100px] p-2 relative text-left align-top;
       @apply dark:border-white/20;
+      /* // added font-sans to override the default font-serif */
+      @apply text-sm font-sans;
 
       &:first-of-type:not(a) {
         @apply mt-0;
       }
 
       p {
-        @apply m-0;
+        /* added font-sans to override the default font-serif */
+        @apply m-0 text-sm font-sans;
 
         & + p {
           @apply mt-3;

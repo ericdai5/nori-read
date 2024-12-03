@@ -5,7 +5,12 @@ import { MenuProps } from '../types'
 import { RefPreviewPanel } from '@/components/panels/RefPreviewPanel'
 import { RefEditorPanel } from '@/components/panels'
 
-export const RefMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
+type RefMenuProps = MenuProps & {
+  isRefViewOpen?: boolean
+  toggleRefView?: () => void
+}
+
+export const RefMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: RefMenuProps): JSX.Element => {
   const [showEdit, setShowEdit] = useState(false)
   const { id, sentence } = useEditorState({
     editor,
@@ -24,8 +29,8 @@ export const RefMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
   }, [])
 
   const handleView = useCallback(() => {
-    console.log('View reference:', id, sentence)
-  }, [id, sentence])
+    toggleRefView?.()
+  }, [toggleRefView])
 
   const onSetRef = useCallback(
     (refId: string, refSentence: string) => {
@@ -57,7 +62,13 @@ export const RefMenu = ({ editor, appendTo }: MenuProps): JSX.Element => {
       {showEdit ? (
         <RefEditorPanel refId={id} sentence={sentence} onSetRef={onSetRef} />
       ) : (
-        <RefPreviewPanel id={id} onClear={onUnsetRef} onEdit={handleEdit} onView={handleView} />
+        <RefPreviewPanel
+          id={id}
+          onClear={onUnsetRef}
+          onEdit={handleEdit}
+          isRefViewOpen={isRefViewOpen}
+          toggleRefView={handleView}
+        />
       )}
     </BaseBubbleMenu>
   )
