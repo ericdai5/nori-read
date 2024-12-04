@@ -16,13 +16,18 @@ export const initialContent = {
     },
     {
       type: 'tableFigure',
+      attrs: {
+        uid: 'figure-1',
+        tableFigureName: 'Table 1: Paper opens and saves during the one-week deployment study',
+        tableFigureRefs: [],
+      },
       content: [
         {
           type: 'table',
           attrs: {
             uid: 'table-1',
-            tableName: 'Table 1',
-            tableRefs: [],
+            // tableName: 'Table 1',
+            // tableRefs: [],
           },
           content: [
             {

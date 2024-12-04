@@ -14,9 +14,41 @@ declare module '@tiptap/core' {
 export const TableFigure = Figure.extend({
   name: 'tableFigure',
   content: 'table figcaption',
-
   group: 'block',
   isolating: true,
+
+  addAttributes() {
+    return {
+      ...this.parent?.(), // Keep existing table attributes
+      uid: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-tableFigure-uid'),
+        renderHTML: attributes => {
+          return {
+            'data-tableFigure-uid': attributes.uid,
+          }
+        },
+      },
+      tableFigureName: {
+        default: 'Table',
+        parseHTML: element => element.getAttribute('data-table-figure-name'),
+        renderHTML: attributes => {
+          return {
+            'data-table-figure-name': attributes.tableFigureName,
+          }
+        },
+      },
+      tableFigureRefs: {
+        default: [],
+        parseHTML: element => element.getAttribute('data-table-figure-refs'),
+        renderHTML: attributes => {
+          return {
+            'data-table-figure-refs': attributes.tableFigureRefs,
+          }
+        },
+      },
+    }
+  },
 
   addOptions() {
     return {
