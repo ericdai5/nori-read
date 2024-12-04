@@ -15,6 +15,7 @@ import { initialContent } from '@/lib/data/sampleText'
 import { Ai } from '@/extensions/Ai'
 import { AiImage, AiWriter } from '@/extensions'
 import { Reference } from '@/extensions/Reference'
+import { TableFigure } from '@/extensions/TableFigure'
 
 declare global {
   interface Window {
@@ -63,6 +64,7 @@ export const useBlockEditor = ({
           provider,
         }),
         Reference,
+        TableFigure,
         provider && ydoc
           ? Collaboration.configure({
               document: ydoc,

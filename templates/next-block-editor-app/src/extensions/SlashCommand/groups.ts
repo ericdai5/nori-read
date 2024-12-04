@@ -123,14 +123,24 @@ export const GROUPS: Group[] = [
     name: 'insert',
     title: 'Insert',
     commands: [
+      // {
+      //   name: 'table',
+      //   label: 'Table',
+      //   iconName: 'Table',
+      //   description: 'Insert a table',
+      //   shouldBeHidden: editor => editor.isActive('columns'),
+      //   action: editor => {
+      //     editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run()
+      //   },
+      // },
       {
-        name: 'table',
+        name: 'tableFigure',
         label: 'Table',
         iconName: 'Table',
-        description: 'Insert a table',
+        description: 'Insert a table with caption',
         shouldBeHidden: editor => editor.isActive('columns'),
         action: editor => {
-          editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: false }).run()
+          editor.chain().focus().setTableFigure().run()
         },
       },
       {

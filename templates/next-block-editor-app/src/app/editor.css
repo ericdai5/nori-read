@@ -94,4 +94,23 @@
     @apply text-sm text-neutral-500 mt-4 transition-all overflow-hidden;
     @apply dark:text-neutral-400;
   }
+
+  figure[data-type='tableFigure'] {
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  figure[data-type='tableFigure'] figcaption {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #666;
+    text-align: center;
+  }
+
+  figure[data-type='tableFigure'] table {
+    width: 100%;
+    border-collapse: collapse;
+  }
 }
