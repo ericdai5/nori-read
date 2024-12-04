@@ -110,7 +110,8 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
         <MemoButton tooltip="Code block" onClick={commands.onCodeBlock}>
           <Icon name="FileCode" />
         </MemoButton>
-        <EditLinkPopover onSetLink={commands.onLink} />
+        {/* Button to add link */}
+        {/* <EditLinkPopover onSetLink={commands.onLink} /> */}
         <EditRefPopover onSetRef={commands.onRef} />
         <Popover.Root>
           <Popover.Trigger asChild>
@@ -128,7 +129,8 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
             </Surface>
           </Popover.Content>
         </Popover.Root>
-        <Popover.Root>
+        {/* Button to change text color */}
+        {/* <Popover.Root>
           <Popover.Trigger asChild>
             <MemoButton active={!!states.currentColor} tooltip="Text color">
               <Icon name="Palette" />
@@ -143,7 +145,7 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
               />
             </Surface>
           </Popover.Content>
-        </Popover.Root>
+        </Popover.Root> */}
         <Popover.Root>
           <Popover.Trigger asChild>
             <MemoButton tooltip="More options">
