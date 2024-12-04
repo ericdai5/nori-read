@@ -37,7 +37,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold first:mt-0 last:mb-0;
+    @apply font-bold font-serif first:mt-0 last:mb-0;
   }
 
   h1,

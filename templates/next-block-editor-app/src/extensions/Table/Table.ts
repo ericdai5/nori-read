@@ -1,10 +1,49 @@
 import TiptapTable from '@tiptap/extension-table'
 
-export const Table = TiptapTable.configure({
-  resizable: true,
-  lastColumnResizable: true,
-  cellMinWidth: 20,
-  handleWidth: 4,
+export const Table = TiptapTable.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(), // Keep existing table attributes
+      uid: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-table-uid'),
+        renderHTML: attributes => {
+          return {
+            'data-reference-id': attributes.id,
+          }
+        },
+      },
+      tableName: {
+        default: 'Table',
+        parseHTML: element => element.getAttribute('data-table-name'),
+        renderHTML: attributes => {
+          return {
+            'data-table-name': attributes.tableName,
+          }
+        },
+      },
+      tableRefs: {
+        default: [],
+        parseHTML: element => element.getAttribute('data-table-refs'),
+        renderHTML: attributes => {
+          return {
+            'data-table-refs': attributes.tableRefs,
+          }
+        },
+      },
+    }
+  },
+
+  // Keep your existing configuration
+  addOptions() {
+    return {
+      ...this.parent?.(),
+      resizable: true,
+      lastColumnResizable: true,
+      cellMinWidth: 20,
+      handleWidth: 4,
+    }
+  },
 })
 
 export default Table

@@ -24,7 +24,7 @@ export const EditorHeader = ({ editor, collabState, users, isSidebarOpen, toggle
   })
 
   return (
-    <div className="flex flex-row items-center justify-between flex-none py-2 pl-6 pr-3 text-black bg-transparent border-b dark:bg-transparent dark:text-white">
+    <div className="absolute top-0 left-0 right-0 z-10 flex flex-row items-center justify-between pl-3 pr-6 py-2 text-black dark:text-white">
       <div className="flex flex-row gap-x-1.5 items-center">
         <div className="flex items-center gap-x-1.5">
           <Toolbar.Button

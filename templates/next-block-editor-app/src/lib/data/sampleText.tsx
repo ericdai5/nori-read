@@ -3,6 +3,11 @@ export const initialContent = {
   content: [
     {
       type: 'table',
+      attrs: {
+        uid: 'table-1',
+        tableName: 'Table 1',
+        tableRefs: [],
+      },
       content: [
         {
           type: 'tableRow',
@@ -561,6 +566,7 @@ export const initialContent = {
       attrs: {
         class: null,
         textAlign: 'left',
+        uid: 'p-1',
       },
       content: [
         {
@@ -576,6 +582,7 @@ export const initialContent = {
                 id: '49FGAAK',
                 sentence:
                   'During the one-week deployment, each participant opened an average of 39.3 papers (SD=21) using CiteSee and saved 25.8 papers (SD=12.2) to their paper library.',
+                uid: 'ref-1',
               },
             },
           ],
@@ -594,6 +601,7 @@ export const initialContent = {
                 id: '90BSALK',
                 sentence:
                   'On average, the majority of papers saved in our study came from examining inline citations (57%, n=6, SD=24%, .95CI[32%,82%]) and the rest came from sources outside of the system that we did not track due to privacy concerns (e.g., web searches or socialsharing.)',
+                uid: 'ref-2',
               },
             },
           ],
@@ -610,6 +618,7 @@ export const initialContent = {
       attrs: {
         class: null,
         textAlign: 'left',
+        uid: 'p-2',
       },
       content: [
         {
@@ -623,6 +632,7 @@ export const initialContent = {
       attrs: {
         class: null,
         textAlign: 'left',
+        uid: 'p-3',
       },
       content: [
         {

@@ -70,8 +70,10 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
     levels: [1, 2, 3, 4, 5, 6],
   }),
   HorizontalRule,
+  // IMPORTANT:unique ID configuration
   UniqueID.configure({
-    types: ['paragraph', 'heading', 'blockquote', 'codeBlock', 'table'],
+    attributeName: 'uid',
+    types: ['paragraph', 'heading', 'blockquote', 'codeBlock', 'table', 'reference'],
     filterTransaction: transaction => !isChangeOrigin(transaction),
   }),
   StarterKit.configure({
