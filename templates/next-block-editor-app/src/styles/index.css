@@ -29,7 +29,7 @@
     }
   }
 
-  table {
+  /* table {
     table-layout: fixed;
     border-collapse: collapse;
     width: auto !important;
@@ -122,7 +122,7 @@
     transform: translateZ(0);
     z-index: 20;
     touch-action: none;
-  }
+  } */
 }
 
 [data-theme='slash-command'] {
