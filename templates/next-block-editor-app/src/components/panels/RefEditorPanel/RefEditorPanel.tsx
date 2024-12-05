@@ -11,9 +11,7 @@ export type RefEditorPanelProps = {
 }
 
 export const useRefEditorState = ({ refId, sentence, onSetRef }: RefEditorPanelProps) => {
-  // const [url, setUrl] = useState(initialUrl || '')
   const [id, setRefId] = useState(refId || '')
-  // const [openInNewTab, setOpenInNewTab] = useState(initialOpenInNewTab || false)
   const [sen, setSentence] = useState(sentence || '')
 
   const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,12 +56,6 @@ export const RefEditorPanel = ({ onSetRef, refId, sentence }: RefEditorPanelProp
           Set Reference
         </Button>
       </form>
-      {/* <div className="mt-3">
-        <label className="flex items-center justify-start gap-2 text-sm font-semibold cursor-pointer select-none text-neutral-500 dark:text-neutral-400">
-          Open in new tab
-          <Toggle active={state.openInNewTab} onChange={state.setOpenInNewTab} />
-        </label>
-      </div> */}
     </Surface>
   )
 }

@@ -5,6 +5,7 @@ import Collaboration from '@tiptap/extension-collaboration'
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
 import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
 import type { Doc as YDoc } from 'yjs'
+import { suggestion } from '@/extensions/CustomMention/suggestion'
 
 import { ExtensionKit } from '@/extensions/extension-kit'
 import { userColors, userNames } from '../lib/constants'
@@ -16,6 +17,8 @@ import { Ai } from '@/extensions/Ai'
 import { AiImage, AiWriter } from '@/extensions'
 import { Reference } from '@/extensions/Reference'
 import { TableFigure } from '@/extensions/TableFigure'
+import Mention from '@tiptap/extension-mention'
+import { CustomMention } from '@/extensions/CustomMention'
 
 declare global {
   interface Window {
@@ -65,6 +68,16 @@ export const useBlockEditor = ({
         }),
         Reference,
         TableFigure,
+        CustomMention.configure({
+          HTMLAttributes: {
+            class:
+              'inline-flex items-center px-2 py-1 mx-1 text-sm font-medium rounded-md bg-gray-100 hover:bg-gray-200 reference-citation font-sans text-neutral-500 hover:text-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-300 transition-transform hover:scale-105',
+          },
+          suggestion,
+          renderHTML({ node }) {
+            return `${node.attrs.label}`
+          },
+        }),
         provider && ydoc
           ? Collaboration.configure({
               document: ydoc,

@@ -3,6 +3,7 @@ import React, { useRef } from 'react'
 
 import { LinkMenu } from '@/components/menus'
 import { RefMenu } from '@/components/menus'
+import { MentionMenu } from '@/components/menus/MentionMenu'
 
 import { useBlockEditor } from '@/hooks/useBlockEditor'
 
@@ -55,6 +56,12 @@ export const BlockEditor = ({
         <ContentItemMenu editor={editor} />
         <LinkMenu editor={editor} appendTo={menuContainerRef} />
         <RefMenu
+          editor={editor}
+          appendTo={menuContainerRef}
+          isRefViewOpen={refView.isOpen}
+          toggleRefView={refView.toggle}
+        />
+        <MentionMenu
           editor={editor}
           appendTo={menuContainerRef}
           isRefViewOpen={refView.isOpen}

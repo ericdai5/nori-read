@@ -13,24 +13,24 @@ export const Table = TiptapTable.extend({
           }
         },
       },
-      //   tableName: {
-      //     default: 'Table',
-      //     parseHTML: element => element.getAttribute('data-table-name'),
-      //     renderHTML: attributes => {
-      //       return {
-      //         'data-table-name': attributes.tableName,
-      //       }
-      //     },
-      //   },
-      //   tableRefs: {
-      //     default: [],
-      //     parseHTML: element => element.getAttribute('data-table-refs'),
-      //     renderHTML: attributes => {
-      //       return {
-      //         'data-table-refs': attributes.tableRefs,
-      //       }
-      //     },
-      //   },
+      name: {
+        default: 'Table',
+        parseHTML: element => element.getAttribute('data-table-name'),
+        renderHTML: attributes => {
+          return {
+            'data-table-name': attributes.name,
+          }
+        },
+      },
+      refs: {
+        default: [],
+        parseHTML: element => element.getAttribute('data-table-refs'),
+        renderHTML: attributes => {
+          return {
+            'data-table-refs': attributes.refs,
+          }
+        },
+      },
     }
   },
 
