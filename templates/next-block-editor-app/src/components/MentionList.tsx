@@ -60,8 +60,8 @@ export default forwardRef<MentionListRef>((props: any, ref) => {
       {props.items.length ? (
         props.items.map((item: MentionSuggestion, index: number) => (
           <button
-            className={`w-full text-left px-2 py-1 rounded hover:bg-blue-50 ${
-              index === selectedIndex ? 'bg-blue-100' : ''
+            className={`w-full text-left text-sm text-zinc-500 hover:text-zinc-700 px-2 py-1 rounded-md hover:bg-zinc-200 ${
+              index === selectedIndex ? 'bg-zinc-100' : ''
             }`}
             key={item.id}
             onClick={() => selectItem(index)}
