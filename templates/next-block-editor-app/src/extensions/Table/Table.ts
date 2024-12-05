@@ -6,28 +6,28 @@ export const Table = TiptapTable.extend({
       ...this.parent?.(), // Keep existing table attributes
       uid: {
         default: null,
-        parseHTML: element => element.getAttribute('data-table-uid'),
+        parseHTML: element => element.getAttribute('uid'),
         renderHTML: attributes => {
           return {
-            'data-reference-id': attributes.id,
+            uid: attributes.uid,
           }
         },
       },
       name: {
         default: 'Table',
-        parseHTML: element => element.getAttribute('data-table-name'),
+        parseHTML: element => element.getAttribute('name'),
         renderHTML: attributes => {
           return {
-            'data-table-name': attributes.name,
+            name: attributes.name,
           }
         },
       },
       refs: {
         default: [],
-        parseHTML: element => element.getAttribute('data-table-refs'),
+        parseHTML: element => element.getAttribute('refs'),
         renderHTML: attributes => {
           return {
-            'data-table-refs': attributes.refs,
+            refs: attributes.refs,
           }
         },
       },

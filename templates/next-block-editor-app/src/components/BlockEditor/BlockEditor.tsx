@@ -59,7 +59,7 @@ export const BlockEditor = ({
           editor={editor}
           appendTo={menuContainerRef}
           isRefViewOpen={refView.isOpen}
-          toggleRefView={refView.toggle}
+          toggleRefView={() => refView.toggle({} as any)}
         />
         <MentionMenu
           editor={editor}
@@ -73,7 +73,7 @@ export const BlockEditor = ({
         <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
         <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
       </div>
-      <RefView isOpen={refView.isOpen} onClose={refView.close} editor={editor} />
+      <RefView isOpen={refView.isOpen} onClose={refView.close} editor={editor} refData={refView.refData} />
     </div>
   )
 }

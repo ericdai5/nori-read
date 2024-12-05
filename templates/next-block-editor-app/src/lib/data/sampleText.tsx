@@ -604,7 +604,7 @@ export const initialContent = {
         {
           type: 'custom-mention',
           attrs: {
-            uid: 'figure-1',
+            id: 'figure-1',
             label: 'Table 1',
             tableUid: 'table-1',
             sentence:
@@ -633,7 +633,7 @@ export const initialContent = {
         {
           type: 'custom-mention',
           attrs: {
-            uid: 'figure-2',
+            id: 'figure-2',
             label: 'Table 1',
             tableUid: 'table-1',
             sentence:

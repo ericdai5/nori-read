@@ -2,17 +2,17 @@ import { RawCommands } from '@tiptap/core'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
-    togglemMention: {
+    toggleMention: {
       /**
        * Toggle a mention on and off.
        */
-      toggleMention: (attributes?: Record<string, any>) => ReturnType
+      toggleMention: (attributes: { id: string; label: string; tableUid: string; sentence: string }) => ReturnType
     }
   }
 }
 
 export const toggleMention: RawCommands['toggleMention'] =
-  (attributes = {}) =>
+  attributes =>
   ({ state, commands }) => {
     const { selection } = state
     const { $from, $to } = selection
@@ -22,8 +22,18 @@ export const toggleMention: RawCommands['toggleMention'] =
     const isMention = node?.type.name === 'custom-mention'
 
     if (isMention) {
-      return true
+      // If it's already a mention, update its attributes
+      return commands.updateAttributes('custom-mention', attributes)
     } else {
-      return false
+      // If it's not a mention, create one with the attributes
+      return commands.insertContent({
+        type: 'custom-mention',
+        attrs: {
+          id: attributes.id,
+          label: attributes.label,
+          tableUid: attributes.tableUid,
+          sentence: attributes.sentence,
+        },
+      })
     }
   }

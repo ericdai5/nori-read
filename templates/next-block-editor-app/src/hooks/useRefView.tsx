@@ -1,20 +1,34 @@
 import { useCallback, useMemo, useState } from 'react'
 
+type RefData = {
+  id?: string
+  label?: string
+  tableUid?: string
+  sentence?: string
+}
+
 export type RefViewState = {
   isOpen: boolean
-  open: () => void
+  refData: RefData
+  toggle: (data: RefData) => void
   close: () => void
-  toggle: () => void
+  open: () => void
 }
 
 export const useRefView = (): RefViewState => {
   const [isOpen, setIsOpen] = useState(false)
+  const [refData, setRefData] = useState<RefData>({})
+
   return useMemo(() => {
     return {
       isOpen,
+      refData,
       open: () => setIsOpen(true),
       close: () => setIsOpen(false),
-      toggle: () => setIsOpen(prev => !prev),
+      toggle: (data: RefData) => {
+        setRefData(data)
+        setIsOpen(prev => !prev)
+      },
     }
-  }, [isOpen])
+  }, [isOpen, refData])
 }

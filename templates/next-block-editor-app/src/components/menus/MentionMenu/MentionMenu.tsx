@@ -6,7 +6,7 @@ import { CMentionPreview } from '@/components/panels/CMentionPreview'
 
 type MentionMenuProps = MenuProps & {
   isRefViewOpen?: boolean
-  toggleRefView?: () => void
+  toggleRefView?: (data: { id: string; label: string; tableUid: string; sentence: string }) => void
 }
 
 export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: MentionMenuProps): JSX.Element => {
@@ -19,12 +19,17 @@ export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: 
   })
 
   const shouldShow = useCallback(() => {
-    return editor.isActive('custom-mention')
+    const isActive = editor.isActive('custom-mention')
+    return isActive
   }, [editor])
 
   const handleView = useCallback(() => {
-    toggleRefView?.()
-  }, [toggleRefView])
+    console.log('handleView called with:', { id, label, tableUid, sentence })
+    if (id && label && tableUid && sentence) {
+      console.log('Executing toggleRefView with:', { id, label, tableUid, sentence })
+      toggleRefView?.({ id, label, tableUid, sentence })
+    }
+  }, [toggleRefView, id, label, tableUid, sentence])
 
   return (
     <BaseBubbleMenu
@@ -41,14 +46,7 @@ export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: 
         },
       }}
     >
-      <CMentionPreview
-        id={id}
-        label={label}
-        tableUid={tableUid}
-        sentence={sentence}
-        isRefViewOpen={isRefViewOpen}
-        toggleRefView={handleView}
-      />
+      <CMentionPreview isRefViewOpen={isRefViewOpen} toggleRefView={handleView} />
     </BaseBubbleMenu>
   )
 }
