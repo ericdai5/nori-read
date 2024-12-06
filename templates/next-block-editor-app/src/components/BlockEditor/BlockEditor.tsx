@@ -1,5 +1,6 @@
 import { EditorContent } from '@tiptap/react'
 import React, { useRef } from 'react'
+import { cn } from '@/lib/utils'
 
 import { LinkMenu } from '@/components/menus'
 import { RefMenu } from '@/components/menus'
@@ -44,7 +45,12 @@ export const BlockEditor = ({
   return (
     <div className="flex h-full" ref={menuContainerRef}>
       <Sidebar isOpen={leftSidebar.isOpen} onClose={leftSidebar.close} editor={editor} />
-      <div className="relative flex flex-col flex-1 h-full overflow-hidden">
+      <div
+        className={cn(
+          'relative flex flex-col flex-1 h-full overflow-hidden transition-all duration-300 ease-in-out',
+          refView.isOpen && 'mr-[640px]'
+        )}
+      >
         <EditorHeader
           editor={editor}
           collabState={collabState}

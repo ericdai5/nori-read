@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 
 type RefData = {
-  id?: string
-  label?: string
-  tableUid?: string
-  sentence?: string
+  id: string
+  label: string
+  tableUid: string
+  sentence: string
 }
 
 export type RefViewState = {
@@ -17,7 +17,7 @@ export type RefViewState = {
 
 export const useRefView = (): RefViewState => {
   const [isOpen, setIsOpen] = useState(false)
-  const [refData, setRefData] = useState<RefData>({})
+  const [refData, setRefData] = useState<RefData>({ id: '', label: '', tableUid: '', sentence: '' })
 
   return useMemo(() => {
     return {
