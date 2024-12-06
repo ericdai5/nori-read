@@ -17,7 +17,7 @@ export const initialContent = {
     {
       type: 'table',
       attrs: {
-        uid: 'table-1',
+        id: 'bdd5cf6d-7e72-401a-8875-fa9c02f3cad7',
         name: 'Table 1',
         refs: [],
       },
@@ -74,6 +74,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: 'bc3572d3-11b5-4a17-ba26-13a3d8eb473e',
+          },
           content: [
             {
               type: 'tableCell',
@@ -124,6 +127,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '6949ab4c-640e-4d39-b207-a48a7b036362',
+          },
           content: [
             {
               type: 'tableCell',
@@ -174,6 +180,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '0d952410-98c3-44bb-8178-ab6460754cfd',
+          },
           content: [
             {
               type: 'tableCell',
@@ -224,6 +233,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '7895e028-024f-43c7-a649-e153d94914d8',
+          },
           content: [
             {
               type: 'tableCell',
@@ -274,6 +286,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '2f04374e-4859-4726-9286-42ffc2a38059',
+          },
           content: [
             {
               type: 'tableCell',
@@ -324,6 +339,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '0e24cbd7-e69f-40da-a525-01cf3a052817',
+          },
           content: [
             {
               type: 'tableCell',
@@ -374,6 +392,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '6c2a1dc0-ee36-48a4-9b33-385625d6752e',
+          },
           content: [
             {
               type: 'tableCell',
@@ -424,6 +445,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '46674297-314c-4259-a740-b7010900b3c4',
+          },
           content: [
             {
               type: 'tableCell',
@@ -474,6 +498,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: '4280d8f7-2250-4d06-a1b8-8941f22538ad',
+          },
           content: [
             {
               type: 'tableCell',
@@ -524,6 +551,9 @@ export const initialContent = {
         },
         {
           type: 'tableRow',
+          attrs: {
+            id: 'd4bf0dc6-2b94-4426-8253-91b29b48d657',
+          },
           content: [
             {
               type: 'tableCell',
@@ -579,34 +609,19 @@ export const initialContent = {
       attrs: {
         class: null,
         textAlign: 'left',
-        uid: 'p-1',
+        id: 'bb426566-7766-4770-805a-fcbdfd0510f2',
       },
       content: [
         {
           type: 'text',
           text: 'During the one-week deployment, each participant opened an average of 39.3 papers (SD=21) using CiteSee and saved 25.8 papers (SD=12.2) to their paper library ',
         },
-        // {
-        //   type: 'text',
-        //   marks: [
-        //     {
-        //       type: 'reference',
-        //       attrs: {
-        //         id: '49FGAAK',
-        //         sentence:
-        //           'During the one-week deployment, each participant opened an average of 39.3 papers (SD=21) using CiteSee and saved 25.8 papers (SD=12.2) to their paper library.',
-        //         uid: 'ref-1',
-        //       },
-        //     },
-        //   ],
-        //   text: 'Table 1',
-        // },
         {
           type: 'custom-mention',
           attrs: {
-            id: 'figure-1',
+            id: '6202fd6f-4f38-4f2a-ab81-067d09289ab2',
             label: 'Table 1',
-            tableUid: 'table-1',
+            tableUid: 'bdd5cf6d-7e72-401a-8875-fa9c02f3cad7',
             sentence:
               'During the one-week deployment, each participant opened an average of 39.3 papers (SD=21) using CiteSee and saved 25.8 papers (SD=12.2) to their paper library.',
           },
@@ -615,27 +630,12 @@ export const initialContent = {
           type: 'text',
           text: '. Participants used both the inline citations and external sources (such as search engines or social recommendations) to explore and save useful papers. While a prior survey found inline citations accounted for around 21% (n=881) of paper discovery during research [33], participants in our field deployment study used CiteSee to discover useful prior work via inline citations around 2.7x more frequently than that. On average, the majority of papers saved in our study came from examining inline citations (57%, n=6, SD=24%, .95CI[32%,82%]',
         },
-        // {
-        //   type: 'text',
-        //   marks: [
-        //     {
-        //       type: 'reference',
-        //       attrs: {
-        //         id: '90BSALK',
-        //         sentence:
-        //           'On average, the majority of papers saved in our study came from examining inline citations (57%, n=6, SD=24%, .95CI[32%,82%]) and the rest came from sources outside of the system that we did not track due to privacy concerns (e.g., web searches or socialsharing.)',
-        //         uid: 'ref-2',
-        //       },
-        //     },
-        //   ],
-        //   text: 'Table 1',
-        // },
         {
           type: 'custom-mention',
           attrs: {
-            id: 'figure-2',
+            id: 'f81431bb-076e-44fc-9752-6ca25401572f',
             label: 'Table 1',
-            tableUid: 'table-1',
+            tableUid: 'bdd5cf6d-7e72-401a-8875-fa9c02f3cad7',
             sentence:
               'On average, the majority of papers saved in our study came from examining inline citations (57%, n=6, SD=24%, .95CI[32%,82%]) and the rest came from sources outside of the system that we did not track due to privacy concerns (e.g., web searches or socialsharing.)',
           },
@@ -651,7 +651,7 @@ export const initialContent = {
       attrs: {
         class: null,
         textAlign: 'left',
-        uid: 'p-2',
+        id: '70c7bd5d-f786-4165-aae4-cd629b27c9b9',
       },
       content: [
         {
@@ -665,7 +665,7 @@ export const initialContent = {
       attrs: {
         class: null,
         textAlign: 'left',
-        uid: 'p-3',
+        id: '8ba4d32b-bdf5-49c8-84c4-a60b9232efed',
       },
       content: [
         {

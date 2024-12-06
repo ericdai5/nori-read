@@ -27,7 +27,7 @@ type TableNode = {
 
 function findTable(nodes: TableNode[], uid: string): TableNode | null {
   for (const node of nodes) {
-    if (node.type === 'table' && node.attrs && node.attrs.uid === uid) {
+    if (node.type === 'table' && node.attrs && node.attrs.id === uid) {
       return node
     }
     if (node.content && Array.isArray(node.content)) {

@@ -1,6 +1,7 @@
 'use client'
 
 import { HocuspocusProvider } from '@hocuspocus/provider'
+import { v4 as uuidv4 } from 'uuid'
 
 import { API } from '@/lib/api'
 
@@ -72,8 +73,24 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
   HorizontalRule,
   // IMPORTANT:unique ID configuration
   UniqueID.configure({
-    attributeName: 'uid',
-    types: ['paragraph', 'heading', 'blockquote', 'codeBlock', 'table', 'reference'],
+    attributeName: 'id',
+    types: [
+      'paragraph',
+      'heading',
+      'blockquote',
+      'codeBlock',
+      'table',
+      'tableHeading',
+      'tableRow',
+      'tableCell',
+      'reference',
+      'custom-mention',
+    ],
+    generateID: () => {
+      const id = uuidv4()
+      console.log('Generated new uniqueID:', id)
+      return id
+    },
     filterTransaction: transaction => !isChangeOrigin(transaction),
   }),
   StarterKit.configure({

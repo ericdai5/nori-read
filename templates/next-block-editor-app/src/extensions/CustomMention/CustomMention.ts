@@ -29,19 +29,19 @@ export const CustomMention = Mention.extend({
       ...this.parent?.(),
       tableUid: {
         default: null,
-        parseHTML: element => element.getAttribute('tableUid'),
+        parseHTML: element => element.getAttribute('data-tableUid'),
         renderHTML: attributes => {
           return {
-            tableUid: attributes.tableUid,
+            'data-tableUid': attributes.tableUid,
           }
         },
       },
       sentence: {
         default: null,
-        parseHTML: element => element.getAttribute('sentence'),
+        parseHTML: element => element.getAttribute('data-sentence'),
         renderHTML: attributes => {
           return {
-            sentence: attributes.sentence,
+            'data-sentence': attributes.sentence,
           }
         },
       },
