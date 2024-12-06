@@ -11,6 +11,8 @@ import { TableHeader } from '@/extensions/Table'
 import { Document } from '@tiptap/extension-document'
 import { Paragraph } from '@tiptap/extension-paragraph'
 import { Text } from '@tiptap/extension-text'
+import { Button } from '../ui/Button'
+import { Icon } from '@/components/ui/Icon'
 
 interface RefViewProps {
   editor: Editor
@@ -125,8 +127,16 @@ export const RefView = memo(({ editor, isOpen, onClose, refData }: RefViewProps)
                   </div>
                 </div>
                 {/* Sentence area */}
-                <div className="p-6 flex h-[240px] max-w-[42rem] font-serif text-lg text-black whitespace-normal">
+                <div className="p-6 flex h-[200px] max-w-[42rem] font-serif text-lg text-black whitespace-normal">
                   {sentence}
+                  {/* Button area */}
+                  <Button
+                    variant="ghost"
+                    buttonSize="icon"
+                    className="font-sans border p-0 border-neutral-200 absolute bottom-6 right-6 "
+                  >
+                    <Icon name="Sparkles" />
+                  </Button>
                 </div>
               </div>
             ) : null}
