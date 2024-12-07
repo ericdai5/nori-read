@@ -2,22 +2,16 @@ export const initialContent = {
   type: 'doc',
   content: [
     {
-      type: 'paragraph',
+      type: 'heading',
       attrs: {
-        class: null,
+        id: 'ad8aab81-bfae-40fc-8f84-505b72889f13',
         textAlign: 'left',
-        id: 'bb426566-7766-4770-805a-fcbdfd0510f2',
+        level: 1,
       },
       content: [
         {
           type: 'text',
-          marks: [
-            {
-              type: 'refHighlight',
-              attrs: { color: '#ffeb3b' },
-            },
-          ],
-          text: 'This is highlighted text',
+          text: 'Research Findings',
         },
       ],
     },
@@ -37,13 +31,7 @@ export const initialContent = {
           content: [
             {
               type: 'tableCell',
-              attrs: {
-                id: 'f56c4418-97be-4aca-9645-89ff4b8e058d',
-                colspan: 1,
-                rowspan: 1,
-                colwidth: null,
-                backgroundColor: '#ffeb3b',
-              },
+              attrs: { id: 'f56c4418-97be-4aca-9645-89ff4b8e058d', colspan: 1, rowspan: 1, colwidth: null },
               content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Action' }] }],
             },
             {
