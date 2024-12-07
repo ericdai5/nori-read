@@ -1,12 +1,10 @@
-import { Node } from '@tiptap/pm/model'
+import { findChildren } from '@tiptap/core'
+import type { Node } from 'prosemirror-model'
 
-export function findTableNodeById(doc: Node, uid: string): Node | null {
-  let foundNode: Node | null = null
-  doc.descendants(node => {
-    if (node?.type?.name === 'table' && node.attrs && node.attrs.id === uid) {
-      foundNode = node
-      return false // Stop traversing once found
-    }
+export const findTableNodeById = (doc: Node, id: string) => {
+  const result = findChildren(doc, node => {
+    return node.type.name === 'table' && node.attrs.id === id
   })
-  return foundNode
+
+  return result[0] // Returns { node, pos }
 }

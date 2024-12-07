@@ -4,6 +4,7 @@ import { Editor } from '@tiptap/react'
 import { Button } from '../ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { TableEditor } from './TableEditor'
+import { ExcerptEditor } from './ExcerptEditor'
 
 interface RefViewProps {
   editor: Editor
@@ -50,15 +51,19 @@ export const RefView = memo(({ editor: mainEditor, isOpen, onClose, refData }: R
           <div className="flex h-full w-full flex-1 p-6 justify-center border-b border-b-neutral-200 dark:border-b-neutral-800">
             <TableEditor mainEditor={mainEditor} tableUid={tableUid} mounted={mounted} isOpen={isOpen} />
           </div>
-          <div className="p-6 flex h-[240px] max-w-[42rem] font-serif text-lg text-black whitespace-normal">
-            {parentId}
+          <div className="relative flex h-[240px] max-w-[42rem]">
+            <div className="z-10 fixed bottom-[216px] w-[42rem] h-6 bg-gradient-to-b from-white via-white via-50% to-transparent"></div>
+            <div className="w-full overflow-y-auto">
+              <ExcerptEditor mainEditor={mainEditor} parentId={parentId} mounted={mounted} isOpen={isOpen} />
+            </div>
             <Button
               variant="ghost"
               buttonSize="icon"
-              className="font-sans border p-0 border-neutral-200 absolute bottom-6 right-6 "
+              className="z-50 fixed font-sans border p-0 bg-white border-neutral-200 bottom-6 right-6"
             >
               <Icon name="Sparkles" />
             </Button>
+            <div className="z-10 fixed bottom-0 w-[42rem] h-14 bg-gradient-to-b from-transparent via-white via-50% to-white"></div>
           </div>
         </div>
       </div>

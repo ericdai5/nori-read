@@ -62,23 +62,43 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
 
     const syncContent = () => {
       try {
+        console.log('Syncing table content, tableUid:', tableUid)
+        console.log('Main editor content:', mainEditor.getJSON())
+
         const table = findTableNodeById(mainEditor.state.doc, tableUid)
+        console.log('Found table:', table)
+
         if (table) {
+          const nodeJson = table.node.toJSON()
+          console.log('Table JSON:', nodeJson)
+
           tableEditor.commands.setContent({
             type: 'doc',
-            content: [table.toJSON()],
+            content: [nodeJson],
           })
+
+          // Force a refresh of the view
+          tableEditor.view.updateState(tableEditor.view.state)
+        } else {
+          console.warn('No table found with ID:', tableUid)
         }
       } catch (error) {
-        console.error('Error syncing content:', error)
+        console.error('Error syncing table content:', error)
       }
     }
 
+    // Initial sync
     syncContent()
+
+    // Add a small delay to ensure the editor is ready
+    const timeoutId = setTimeout(syncContent, 100)
+
+    // Listen for updates
     mainEditor.on('update', syncContent)
 
     return () => {
       mainEditor.off('update', syncContent)
+      clearTimeout(timeoutId)
     }
   }, [tableEditor, mainEditor, tableUid, isOpen, mounted])
 
@@ -88,7 +108,7 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
     }
 
     const handleTableUpdate = (props: { editor: Editor; transaction: Transaction }) => {
-      if (!mainEditor.view) return
+      if (!mainEditor.view || !props.transaction.docChanged) return
 
       try {
         const json = props.editor.getJSON()
@@ -98,31 +118,36 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
         const table = findTableNodeById(mainEditor.state.doc, tableUid)
         if (!table) return
 
-        const mainEditorJson = mainEditor.getJSON()
-        if (!mainEditorJson.content) return
+        // Get current selection state
+        const selection = tableEditor.state.selection
 
-        const updatedContent = mainEditorJson.content.map((node: any) => {
-          if (node.type === 'table' && node.attrs?.id === tableUid) {
-            return {
-              ...updatedTable,
-              attrs: {
-                ...updatedTable.attrs,
-                id: tableUid,
-              },
-            }
-          }
-          return node
+        // Create and dispatch the transaction immediately
+        const { tr } = mainEditor.state
+        const pos = table.pos // Position in the document
+        const tableNode = table.node // The actual table node
+
+        // Create new node with updated content and preserved ID
+        const newNode = mainEditor.schema.nodeFromJSON({
+          ...updatedTable,
+          attrs: {
+            ...updatedTable.attrs,
+            id: tableUid,
+          },
         })
 
-        mainEditor.commands.setContent({
-          type: 'doc',
-          content: updatedContent,
-        })
+        // Apply the transaction immediately
+        mainEditor.view.dispatch(tr.replaceWith(pos, pos + tableNode.nodeSize, newNode))
+
+        // Restore selection in table editor
+        if (selection) {
+          tableEditor.commands.setTextSelection(selection.from)
+        }
       } catch (error) {
         console.error('Error updating main editor:', error)
       }
     }
 
+    // Only listen for content updates
     tableEditor.on('update', handleTableUpdate)
 
     return () => {
@@ -136,7 +161,7 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
     <div className="flex w-full h-full overflow-hidden justify-center items-center" ref={menuContainerRef}>
       <TableColumnMenu editor={tableEditor} appendTo={menuContainerRef} />
       <TableRowMenu editor={tableEditor} appendTo={menuContainerRef} />
-      <div className="flex w-full justify-center items-cente">
+      <div className="flex w-full justify-center items-center">
         <EditorContent editor={tableEditor} />
       </div>
     </div>
