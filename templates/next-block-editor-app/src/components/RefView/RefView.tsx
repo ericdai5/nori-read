@@ -7,13 +7,13 @@ import { TableEditor } from './TableEditor'
 
 interface RefViewProps {
   editor: Editor
-  refData: { id: string; label: string; tableUid: string; sentence: string }
+  refData: { id: string; label: string; tableUid: string; parentId: string }
   isOpen?: boolean
   onClose: () => void
 }
 
 export const RefView = memo(({ editor: mainEditor, isOpen, onClose, refData }: RefViewProps) => {
-  const { id, label, tableUid, sentence } = refData
+  const { id, label, tableUid, parentId } = refData
   const [mounted, setMounted] = useState(false)
   const refViewWidth = 640
 
@@ -47,11 +47,11 @@ export const RefView = memo(({ editor: mainEditor, isOpen, onClose, refData }: R
       </div>
       <div className={windowClassName}>
         <div className="flex flex-col w-auto h-full">
-          <div className="flex h-full w-full flex-1 p-6 justify-center border-b bg-red-500 border-b-neutral-200 dark:border-b-neutral-800">
+          <div className="flex h-full w-full flex-1 p-6 justify-center border-b border-b-neutral-200 dark:border-b-neutral-800">
             <TableEditor mainEditor={mainEditor} tableUid={tableUid} mounted={mounted} isOpen={isOpen} />
           </div>
           <div className="p-6 flex h-[240px] max-w-[42rem] font-serif text-lg text-black whitespace-normal">
-            {sentence}
+            {parentId}
             <Button
               variant="ghost"
               buttonSize="icon"

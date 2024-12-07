@@ -62,6 +62,9 @@ export const useBlockEditor = ({
           ctx.editor.commands.focus('start', { scrollIntoView: true })
         }
       },
+      onUpdate: ({ editor }) => {
+        console.log('Document state after edit:', editor.getJSON())
+      },
       extensions: [
         ...ExtensionKit({
           provider,

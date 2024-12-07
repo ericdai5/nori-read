@@ -6,15 +6,15 @@ import { CMentionPreview } from '@/components/panels/CMentionPreview'
 
 type MentionMenuProps = MenuProps & {
   isRefViewOpen?: boolean
-  toggleRefView?: (data: { id: string; label: string; tableUid: string; sentence: string }) => void
+  toggleRefView?: (data: { id: string; label: string; tableUid: string; parentId: string }) => void
 }
 
 export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: MentionMenuProps): JSX.Element => {
-  const { id, label, tableUid, sentence } = useEditorState({
+  const { id, label, tableUid, parentId } = useEditorState({
     editor,
     selector: ctx => {
       const attrs = ctx.editor.getAttributes('custom-mention')
-      return { id: attrs.id, label: attrs.label, tableUid: attrs.tableUid, sentence: attrs.sentence }
+      return { id: attrs.id, label: attrs.label, tableUid: attrs.tableUid, parentId: attrs.parentId }
     },
   })
 
@@ -24,12 +24,12 @@ export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: 
   }, [editor])
 
   const handleView = useCallback(() => {
-    console.log('handleView called with:', { id, label, tableUid, sentence })
-    if (id && label && tableUid && sentence) {
-      console.log('Executing toggleRefView with:', { id, label, tableUid, sentence })
-      toggleRefView?.({ id, label, tableUid, sentence })
+    console.log('handleView called with:', { id, label, tableUid, parentId })
+    if (id && label && tableUid && parentId) {
+      console.log('Executing toggleRefView with:', { id, label, tableUid, parentId })
+      toggleRefView?.({ id, label, tableUid, parentId })
     }
-  }, [toggleRefView, id, label, tableUid, sentence])
+  }, [toggleRefView, id, label, tableUid, parentId])
 
   return (
     <BaseBubbleMenu

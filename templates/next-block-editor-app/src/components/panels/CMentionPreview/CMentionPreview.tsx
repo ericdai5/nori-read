@@ -5,7 +5,7 @@ import Tooltip from '@/components/ui/Tooltip'
 
 export type CMentionPreviewProps = {
   isRefViewOpen?: boolean
-  toggleRefView?: (data?: { id?: string; label?: string; tableUid?: string; sentence?: string }) => void
+  toggleRefView?: (data?: { id?: string; label?: string; tableUid?: string; parentId?: string }) => void
 }
 
 export const CMentionPreview = ({ isRefViewOpen, toggleRefView }: CMentionPreviewProps) => {

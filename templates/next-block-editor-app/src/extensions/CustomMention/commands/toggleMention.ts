@@ -6,7 +6,7 @@ declare module '@tiptap/core' {
       /**
        * Toggle a mention on and off.
        */
-      toggleMention: (attributes: { id: string; label: string; tableUid: string; sentence: string }) => ReturnType
+      toggleMention: (attributes: { id: string; label: string; tableUid: string; parentId: string }) => ReturnType
     }
   }
 }
@@ -32,7 +32,7 @@ export const toggleMention: RawCommands['toggleMention'] =
           id: attributes.id,
           label: attributes.label,
           tableUid: attributes.tableUid,
-          sentence: attributes.sentence,
+          parentId: attributes.parentId,
         },
       })
     }

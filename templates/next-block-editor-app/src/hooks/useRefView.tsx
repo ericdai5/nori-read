@@ -4,7 +4,7 @@ type RefData = {
   id: string
   label: string
   tableUid: string
-  sentence: string
+  parentId: string
 }
 
 export type RefViewState = {
@@ -17,7 +17,7 @@ export type RefViewState = {
 
 export const useRefView = (): RefViewState => {
   const [isOpen, setIsOpen] = useState(false)
-  const [refData, setRefData] = useState<RefData>({ id: '', label: '', tableUid: '', sentence: '' })
+  const [refData, setRefData] = useState<RefData>({ id: '', label: '', tableUid: '', parentId: '' })
 
   return useMemo(() => {
     return {

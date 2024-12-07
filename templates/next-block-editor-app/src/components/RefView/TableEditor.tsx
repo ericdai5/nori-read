@@ -44,6 +44,7 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
       },
     },
     content: '',
+    immediatelyRender: false,
   })
 
   useEffect(() => {
@@ -132,10 +133,10 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
   if (!tableEditor?.view || !isOpen) return null
 
   return (
-    <div className="flex w-full h-full overflow-hidden bg-blue-500 justify-center items-center" ref={menuContainerRef}>
+    <div className="flex w-full h-full overflow-hidden justify-center items-center" ref={menuContainerRef}>
       <TableColumnMenu editor={tableEditor} appendTo={menuContainerRef} />
       <TableRowMenu editor={tableEditor} appendTo={menuContainerRef} />
-      <div className="flex w-full justify-center items-center bg-green-500">
+      <div className="flex w-full justify-center items-cente">
         <EditorContent editor={tableEditor} />
       </div>
     </div>

@@ -13,7 +13,7 @@ declare module '@tiptap/core' {
       /**
        * Toggle a mention
        */
-      toggleMention: (attributes: { id: string; label: string; tableUid: string; sentence: string }) => ReturnType
+      toggleMention: (attributes: { id: string; label: string; tableUid: string; parentId: string }) => ReturnType
     }
   }
 }
@@ -36,12 +36,12 @@ export const CustomMention = Mention.extend({
           }
         },
       },
-      sentence: {
+      parentId: {
         default: null,
-        parseHTML: element => element.getAttribute('data-sentence'),
+        parseHTML: element => element.getAttribute('data-parentId'),
         renderHTML: attributes => {
           return {
-            'data-sentence': attributes.sentence,
+            'data-parentId': attributes.parentId,
           }
         },
       },
