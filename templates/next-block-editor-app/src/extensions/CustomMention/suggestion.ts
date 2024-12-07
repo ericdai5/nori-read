@@ -39,7 +39,7 @@ export const suggestion: MentionOptions['suggestion'] = {
     editor.state.doc.descendants(node => {
       if (node.type.name === 'table' && node.attrs.name) {
         tables.push({
-          id: node.attrs.uid,
+          id: node.attrs.id,
           label: node.attrs.name,
         })
       }

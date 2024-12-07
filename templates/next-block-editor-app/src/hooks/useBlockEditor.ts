@@ -11,13 +11,11 @@ import { ExtensionKit } from '@/extensions/extension-kit'
 import { userColors, userNames } from '../lib/constants'
 import { randomElement } from '../lib/utils'
 import type { EditorUser } from '../components/BlockEditor/types'
-// import { initialContent } from '@/lib/data/initialContent'
 import { initialContent } from '@/lib/data/sampleText'
 import { Ai } from '@/extensions/Ai'
 import { AiImage, AiWriter } from '@/extensions'
 import { Reference } from '@/extensions/Reference'
 import { TableFigure } from '@/extensions/TableFigure'
-import Mention from '@tiptap/extension-mention'
 import { CustomMention } from '@/extensions/CustomMention'
 
 declare global {
