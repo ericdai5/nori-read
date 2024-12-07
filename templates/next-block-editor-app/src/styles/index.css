@@ -155,3 +155,10 @@
 .external-content.table-content .ProseMirror > *:not(table) {
   display: none;
 }
+
+table {
+  td[data-background-color],
+  th[data-background-color] {
+    transition: background-color 0.2s;
+  }
+}

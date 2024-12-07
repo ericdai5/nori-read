@@ -26,6 +26,10 @@
           @apply mt-3;
         }
       }
+
+      &[data-background-color] {
+        background-color: attr(data-background-color);
+      }
     }
 
     th {
@@ -130,6 +134,11 @@
           @apply border-l-2 border-dotted;
         }
       }
+    }
+
+    td[data-background-color],
+    th[data-background-color] {
+      transition: background-color 0.2s;
     }
   }
 }

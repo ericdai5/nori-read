@@ -53,7 +53,6 @@ import {
 import { ImageUpload } from './ImageUpload'
 import { TableOfContentsNode } from './TableOfContentsNode'
 import { isChangeOrigin } from '@tiptap/extension-collaboration'
-
 interface ExtensionKitProps {
   provider?: HocuspocusProvider | null
 }
@@ -119,7 +118,6 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
   Link.configure({
     openOnClick: false,
   }),
-  Highlight.configure({ multicolor: true }),
   Underline,
   CharacterCount.configure({ limit: 50000 }),
   TableOfContents,

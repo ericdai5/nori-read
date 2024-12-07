@@ -28,6 +28,7 @@ import { CustomMention } from '@/extensions/CustomMention'
 import { findNodeById } from '@/lib/utils/findNodeById'
 import { TextMenu } from '../menus/TextMenu/TextMenu'
 import { Node } from '@tiptap/core'
+import { RefHighlight } from '@/extensions/RefHighlight'
 
 interface TableEditorProps {
   mainEditor: Editor
@@ -76,6 +77,9 @@ export const TableEditor = ({
       }),
       TableRow,
       TableHeader,
+      RefHighlight.configure({
+        multicolor: true,
+      }),
       TableCell,
       ...ExtensionKit({
         provider,

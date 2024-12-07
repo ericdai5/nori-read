@@ -18,6 +18,7 @@ import { CustomMention } from '@/extensions/CustomMention'
 import { findNodeById } from '@/lib/utils/findNodeById'
 import { Transaction } from 'prosemirror-state'
 import { TextMenu } from '../menus/TextMenu/TextMenu'
+import { RefHighlight } from '@/extensions/RefHighlight'
 
 interface ExcerptEditorProps {
   mainEditor: Editor
@@ -53,6 +54,9 @@ export const ExcerptEditor = ({
         provider,
       }),
       Reference,
+      RefHighlight.configure({
+        multicolor: true,
+      }),
       CustomMention.configure({
         HTMLAttributes: {
           class:

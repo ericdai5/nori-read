@@ -63,4 +63,13 @@ export const userNames = [
 
 export const userColors = ['#fb7185', '#fdba74', '#d9f99d', '#a7f3d0', '#a5f3fc', '#a5b4fc', '#f0abfc']
 
-export const themeColors = ['#fb7185', '#fdba74', '#d9f99d', '#a7f3d0', '#a5f3fc', '#a5b4fc']
+export const themeColors = [
+  { color: '#E3F3FF', label: 'Light Blue' },
+  { color: '#BFE4FF', label: 'Dark Blue' },
+  { color: '#E3FFED', label: 'Light Green' },
+  { color: '#C1FFD7', label: 'Dark Green' },
+  { color: '#FFEAD7', label: 'Light Orange' },
+  { color: '#FFD4AE', label: 'Dark Orange' },
+  { color: '#F0DAFF', label: 'Light Purple' },
+  { color: '#E6C3FF', label: 'Dark Purple' },
+]

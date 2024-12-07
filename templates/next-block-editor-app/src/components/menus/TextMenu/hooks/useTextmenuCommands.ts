@@ -20,8 +20,10 @@ export const useTextmenuCommands = (editor: Editor) => {
   const onChangeColor = useCallback((color: string) => editor.chain().setColor(color).run(), [editor])
   const onClearColor = useCallback(() => editor.chain().focus().unsetColor().run(), [editor])
 
-  const onChangeHighlight = useCallback((color: string) => editor.chain().setHighlight({ color }).run(), [editor])
-  const onClearHighlight = useCallback(() => editor.chain().focus().unsetHighlight().run(), [editor])
+  // const onChangeHighlight = useCallback((color: string) => editor.chain().setHighlight({ color }).run(), [editor])
+  // const onClearHighlight = useCallback(() => editor.chain().focus().unsetHighlight().run(), [editor])
+  const onChangeHighlight = useCallback((color: string) => editor.chain().setRefHighlight({ color }).run(), [editor])
+  const onClearHighlight = useCallback(() => editor.chain().focus().unsetRefHighlight().run(), [editor])
 
   // AI Commands
 

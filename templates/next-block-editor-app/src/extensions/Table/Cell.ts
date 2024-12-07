@@ -1,7 +1,6 @@
 import { mergeAttributes, Node } from '@tiptap/core'
 import { Plugin } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
-
 import { getCellsInColumn, isRowSelected, selectRow } from './utils'
 
 export interface TableCellOptions {
@@ -28,11 +27,29 @@ export const TableCell = Node.create<TableCellOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['td', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+    const attrs = mergeAttributes(
+      this.options.HTMLAttributes,
+      HTMLAttributes,
+      HTMLAttributes.backgroundColor
+        ? {
+            'data-background-color': HTMLAttributes.backgroundColor,
+            style: `background-color: ${HTMLAttributes.backgroundColor}`,
+          }
+        : {}
+    )
+    return ['td', attrs, 0]
   },
 
   addAttributes() {
     return {
+      ...this.parent?.(),
+      backgroundColor: {
+        default: null,
+        parseHTML: element => {
+          const backgroundColor = element.getAttribute('data-background-color')
+          return backgroundColor
+        },
+      },
       colspan: {
         default: 1,
         parseHTML: element => {
