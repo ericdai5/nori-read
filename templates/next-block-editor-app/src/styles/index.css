@@ -141,3 +141,17 @@
 @import './partials/placeholder.css';
 @import './partials/table.css';
 @import './partials/typography.css';
+
+/* Table editor styles */
+.external-content.table-content .ProseMirror {
+  min-height: 0;
+  padding: 0;
+}
+
+.external-content.table-content .ProseMirror p:last-child {
+  margin-bottom: 0;
+}
+
+.external-content.table-content .ProseMirror > *:not(table) {
+  display: none;
+}

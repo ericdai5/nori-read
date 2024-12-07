@@ -79,7 +79,15 @@ export const BlockEditor = ({
         <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
         <ImageBlockMenu editor={editor} appendTo={menuContainerRef} />
       </div>
-      <RefView isOpen={refView.isOpen} onClose={refView.close} editor={editor} refData={refView.refData} />
+      <RefView
+        isOpen={refView.isOpen}
+        onClose={refView.close}
+        editor={editor}
+        refData={refView.refData}
+        aiToken={aiToken}
+        ydoc={ydoc}
+        provider={provider}
+      />
     </div>
   )
 }

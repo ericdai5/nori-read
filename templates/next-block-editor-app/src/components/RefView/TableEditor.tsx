@@ -1,5 +1,4 @@
-import { Editor } from '@tiptap/react'
-import { useEditor, EditorContent } from '@tiptap/react'
+import { AnyExtension, Editor } from '@tiptap/react'
 import { Document } from '@tiptap/extension-document'
 import { Paragraph } from '@tiptap/extension-paragraph'
 import { Text } from '@tiptap/extension-text'
@@ -9,8 +8,26 @@ import { TableRow } from '@/extensions/Table'
 import { TableHeader } from '@/extensions/Table'
 import { findTableNodeById } from '@/lib/utils/findTable'
 import { TableColumnMenu, TableRowMenu } from '@/extensions/Table/menus'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Transaction } from 'prosemirror-state'
+import { EditorContent, useEditor, useEditorState } from '@tiptap/react'
+import Collaboration from '@tiptap/extension-collaboration'
+import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
+import { TiptapCollabProvider, WebSocketStatus } from '@hocuspocus/provider'
+import type { Doc as YDoc } from 'yjs'
+import { suggestion } from '@/extensions/CustomMention/suggestion'
+import { ExtensionKit } from '@/extensions/extension-kit'
+import { userColors, userNames } from '@/lib/constants'
+import { randomElement } from '@/lib/utils'
+import type { EditorUser } from '@/components/BlockEditor/types'
+import { Ai } from '@/extensions/Ai'
+import { AiImage, AiWriter } from '@/extensions'
+import { Reference } from '@/extensions/Reference'
+import { TableFigure } from '@/extensions/TableFigure'
+import { CustomMention } from '@/extensions/CustomMention'
+import { findNodeById } from '@/lib/utils/findNodeById'
+import { TextMenu } from '../menus/TextMenu/TextMenu'
+import { Node } from '@tiptap/core'
 
 interface TableEditorProps {
   mainEditor: Editor
@@ -19,39 +36,108 @@ interface TableEditorProps {
   isOpen?: boolean
 }
 
-export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEditorProps) => {
+const TableDocument = Document.extend({
+  content: 'table',
+}).configure({
+  content: 'table',
+})
+
+export const TableEditor = ({
+  mainEditor,
+  tableUid,
+  mounted,
+  isOpen,
+  aiToken,
+  ydoc,
+  provider,
+  userId,
+  userName = 'Maxi',
+}: TableEditorProps & {
+  aiToken?: string
+  ydoc: YDoc | null
+  provider?: TiptapCollabProvider | null | undefined
+  userId?: string
+  userName?: string
+}) => {
+  const [collabState, setCollabState] = useState<WebSocketStatus>(
+    provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected
+  )
+
   const menuContainerRef = useRef<HTMLDivElement>(null)
 
   const tableEditor = useEditor({
     extensions: [
-      Document,
-      Paragraph,
+      TableDocument,
       Text,
       Table.configure({
         resizable: true,
         lastColumnResizable: true,
-        cellMinWidth: 20,
-        handleWidth: 4,
+        allowTableNodeSelection: true,
       }),
-      TableCell,
       TableRow,
       TableHeader,
-    ],
-    editable: true,
+      TableCell,
+      ...ExtensionKit({
+        provider,
+      }).filter(ext => ext.name !== 'doc' && !ext.name.startsWith('table')),
+      Reference,
+      CustomMention.configure({
+        HTMLAttributes: {
+          class:
+            'inline-flex items-center px-2 py-1 mx-1 text-sm font-medium rounded-md bg-gray-100 hover:bg-gray-200 reference-citation font-sans text-neutral-500 hover:text-neutral-700 dark:text-neutral-200 dark:hover:text-neutral-300 transition-transform hover:scale-105',
+        },
+        suggestion,
+        renderHTML({ node }) {
+          return `${node.attrs.label}`
+        },
+      }),
+      provider && ydoc
+        ? Collaboration.configure({
+            document: ydoc,
+          })
+        : undefined,
+      provider
+        ? CollaborationCursor.configure({
+            provider,
+            user: {
+              name: randomElement(userNames),
+              color: randomElement(userColors),
+            },
+          })
+        : undefined,
+      aiToken
+        ? AiWriter.configure({
+            authorId: userId,
+            authorName: userName,
+          })
+        : undefined,
+      aiToken
+        ? AiImage.configure({
+            authorId: userId,
+            authorName: userName,
+          })
+        : undefined,
+      aiToken ? Ai.configure({ token: aiToken }) : undefined,
+    ].filter((e): e is AnyExtension => e !== undefined),
     editorProps: {
       attributes: {
-        class: 'external-content',
+        type: 'table',
+        autocomplete: 'off',
+        autocorrect: 'off',
+        autocapitalize: 'off',
+        class: 'external-content table-content',
       },
     },
+    editable: true,
     content: '',
     immediatelyRender: false,
   })
 
   useEffect(() => {
+    if (!tableEditor) return
+
     return () => {
-      if (tableEditor) {
-        tableEditor.destroy()
-      }
+      tableEditor.destroy()
     }
   }, [tableEditor])
 
@@ -62,38 +148,32 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
 
     const syncContent = () => {
       try {
-        console.log('Syncing table content, tableUid:', tableUid)
-        console.log('Main editor content:', mainEditor.getJSON())
-
         const table = findTableNodeById(mainEditor.state.doc, tableUid)
-        console.log('Found table:', table)
-
         if (table) {
           const nodeJson = table.node.toJSON()
-          console.log('Table JSON:', nodeJson)
+
+          // Get current selection before updating content
+          const wasSelected = tableEditor.view.hasFocus()
+          const prevSelection = tableEditor.state.selection
 
           tableEditor.commands.setContent({
             type: 'doc',
             content: [nodeJson],
           })
 
-          // Force a refresh of the view
-          tableEditor.view.updateState(tableEditor.view.state)
-        } else {
-          console.warn('No table found with ID:', tableUid)
+          // Clear selection if editor wasn't focused
+          if (!wasSelected) {
+            tableEditor.commands.setTextSelection(0)
+            tableEditor.view.dom.blur()
+          }
         }
       } catch (error) {
         console.error('Error syncing table content:', error)
       }
     }
 
-    // Initial sync
     syncContent()
-
-    // Add a small delay to ensure the editor is ready
     const timeoutId = setTimeout(syncContent, 100)
-
-    // Listen for updates
     mainEditor.on('update', syncContent)
 
     return () => {
@@ -159,10 +239,11 @@ export const TableEditor = ({ mainEditor, tableUid, mounted, isOpen }: TableEdit
 
   return (
     <div className="flex w-full h-full overflow-hidden justify-center items-center" ref={menuContainerRef}>
+      <TextMenu editor={tableEditor} />
       <TableColumnMenu editor={tableEditor} appendTo={menuContainerRef} />
       <TableRowMenu editor={tableEditor} appendTo={menuContainerRef} />
       <div className="flex w-full justify-center items-center">
-        <EditorContent editor={tableEditor} />
+        <EditorContent className="flex justify-center items-center" editor={tableEditor} />
       </div>
     </div>
   )
