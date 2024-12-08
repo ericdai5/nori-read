@@ -1,12 +1,14 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { BubbleMenu as BaseBubbleMenu, useEditorState } from '@tiptap/react'
-
 import { MenuProps } from '../types'
 import { CMentionPreview } from '@/components/panels/CMentionPreview'
 
 type MentionMenuProps = MenuProps & {
   isRefViewOpen?: boolean
-  toggleRefView?: (data: { id: string; label: string; tableUid: string; parentId: string }) => void
+  toggleRefView?: (
+    data: { id: string; label: string; tableUid: string; parentId: string },
+    activeRef: string | null
+  ) => void
 }
 
 export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: MentionMenuProps): JSX.Element => {
@@ -24,12 +26,19 @@ export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: 
   }, [editor])
 
   const handleView = useCallback(() => {
-    // console.log('handleView called with:', { id, label, tableUid, parentId })
     if (id && label && tableUid && parentId) {
-      // console.log('Executing toggleRefView with:', { id, label, tableUid, parentId })
-      toggleRefView?.({ id, label, tableUid, parentId })
+      console.log('MentionMenu.tsx: data.id:', id)
+      if (isRefViewOpen) {
+        // If we're closing the current ref
+        editor.commands.updateRefHighlight('')
+      } else {
+        // If we're opening a new ref or switching refs
+        editor.commands.updateRefHighlight(id)
+      }
+      console.log('Executing toggleRefView with:', { id })
+      toggleRefView?.({ id, label, tableUid, parentId }, id)
     }
-  }, [toggleRefView, id, label, tableUid, parentId])
+  }, [id, label, tableUid, parentId, editor, isRefViewOpen, toggleRefView])
 
   return (
     <BaseBubbleMenu

@@ -13,10 +13,10 @@ import { randomElement } from '../lib/utils'
 import type { EditorUser } from '../components/BlockEditor/types'
 import { initialContent } from '@/lib/data/sampleText'
 import { Ai } from '@/extensions/Ai'
-import { AiImage, AiWriter } from '@/extensions'
-import { Reference } from '@/extensions/Reference'
+import { AiImage, AiWriter, RefHighlight } from '@/extensions'
 import { TableFigure } from '@/extensions/TableFigure'
 import { CustomMention } from '@/extensions/CustomMention'
+import { useRefView, RefViewState } from '@/hooks/useRefView'
 
 declare global {
   interface Window {
@@ -37,6 +37,13 @@ export const useBlockEditor = ({
   userId?: string
   userName?: string
 }) => {
+  // console.log('useBlockEditor hook called', {
+  //   hasYdoc: !!ydoc,
+  //   hasProvider: !!provider,
+  //   userId,
+  //   userName,
+  // })
+
   const [collabState, setCollabState] = useState<WebSocketStatus>(
     provider ? WebSocketStatus.Connecting : WebSocketStatus.Disconnected
   )
@@ -47,6 +54,11 @@ export const useBlockEditor = ({
       shouldRerenderOnTransaction: false,
       autofocus: true,
       onCreate: ctx => {
+        // console.log('Editor created', {
+        //   isEmpty: ctx.editor.isEmpty,
+        //   hasProvider: !!provider,
+        //   isSynced: provider?.isSynced,
+        // })
         if (provider && !provider.isSynced) {
           provider.on('synced', () => {
             setTimeout(() => {
@@ -61,13 +73,17 @@ export const useBlockEditor = ({
         }
       },
       onUpdate: ({ editor }) => {
-        console.log('Document state after edit:', editor.getJSON())
+        // console.log('Editor updated', {
+        //   docSize: editor.state.doc.content.size,
+        //   selection: editor.state.selection,
+        // })
+        // console.log('Document state after edit:', editor.getJSON())
       },
       extensions: [
         ...ExtensionKit({
           provider,
         }),
-        Reference,
+        RefHighlight,
         TableFigure,
         CustomMention.configure({
           HTMLAttributes: {
@@ -118,6 +134,7 @@ export const useBlockEditor = ({
     },
     [ydoc, provider]
   )
+
   const users = useEditorState({
     editor,
     selector: (ctx): (EditorUser & { initials: string })[] => {

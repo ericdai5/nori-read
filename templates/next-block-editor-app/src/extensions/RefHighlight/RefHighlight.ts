@@ -8,6 +8,7 @@ import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { EditorView } from '@tiptap/pm/view'
 import { DecorationSet } from '@tiptap/pm/view'
 import { RefViewState } from '@/hooks/useRefView'
+import { Editor as CoreEditor } from '@tiptap/core'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -15,6 +16,7 @@ declare module '@tiptap/core' {
       setRefHighlight: (attributes?: { color: string; refId?: string | null }) => ReturnType
       unsetRefHighlight: () => ReturnType
       updateRefHighlight: (activeRef: string | null) => ReturnType
+      updateRefHighlightState: () => ReturnType
     }
   }
 }
@@ -23,11 +25,7 @@ interface RefHighlightStorage {
   activeRef: string | null
 }
 
-interface RefHighlightOptions {
-  multicolor: boolean
-}
-
-export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightStorage>({
+export const RefHighlight = Highlight.extend<RefHighlightStorage>({
   name: 'refHighlight',
   multicolor: true,
 
@@ -40,7 +38,6 @@ export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightSt
 
   addStorage() {
     return {
-      ...this.parent?.(),
       activeRef: null,
     }
   },
@@ -59,10 +56,9 @@ export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightSt
         default: null,
         parseHTML: element => element.getAttribute('data-highlight-color'),
         renderHTML: attributes => {
-          console.log('attributes.refId', attributes.refId)
-          console.log('this.storage.activeRef', this.storage.activeRef)
+          console.log('RefHighlight.tsx: refId:', attributes.refId, 'activeRef:', this.storage.activeRef)
 
-          const isActive = this.storage.activeRef && this.storage.activeRef === attributes.refId
+          const isActive = this.storage.activeRef === attributes.refId
 
           console.log('isActive', isActive)
 
@@ -84,6 +80,13 @@ export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightSt
             style: `background-color: ${attributes.backgroundColor}`,
           }
         },
+      },
+      state: {
+        default: '0',
+        parseHTML: element => element.getAttribute('data-state'),
+        renderHTML: attributes => ({
+          'data-state': attributes.state,
+        }),
       },
     }
   },
@@ -138,6 +141,7 @@ export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightSt
             .setMark(this.name, {
               color: attributes?.color,
               refId: attributes?.refId,
+              state: '0',
             })
             .run()
         },
@@ -185,64 +189,46 @@ export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightSt
             .run()
         },
 
+      updateRefHighlightState:
+        () =>
+        ({ chain, editor }) => {
+          return chain()
+            .command(({ tr, state, dispatch }) => {
+              if (!dispatch) return true
+
+              const { doc, schema } = state
+              let found = false
+
+              doc.descendants((node, pos) => {
+                if (found) return false
+                const marks = node.marks.filter(mark => mark.type.name === 'refHighlight')
+                if (marks.length > 0) {
+                  const mark = marks[0]
+                  const newState = mark.attrs.state === '0' ? '1' : '0'
+                  tr.addMark(
+                    pos,
+                    pos + node.nodeSize,
+                    schema.marks.refHighlight.create({ ...mark.attrs, state: newState })
+                  )
+                  found = true
+                  dispatch(tr)
+                  return false
+                }
+              })
+
+              return true
+            })
+            .run()
+        },
+
       updateRefHighlight:
         (activeRef: string | null) =>
         ({ editor }) => {
           console.log('RefHighlight.tsx: Updating storage activeRef to:', activeRef)
-          // Update storage
+          editor.storage[this.name] = editor.storage[this.name] || { activeRef: null }
           editor.storage[this.name].activeRef = activeRef
-          // Create transaction with meta info
-          const tr = editor.state.tr
-          tr.setMeta('updateRefHighlight', true)
-          tr.setMeta('newActiveRef', activeRef)
-          tr.setMeta('addToHistory', false)
-          // Dispatch the transaction
-          editor.view.dispatch(tr)
-          // Schedule a state update
-          requestAnimationFrame(() => {
-            if (editor.view) {
-              const state = editor.view.state
-              const tr = state.tr.setSelection(state.selection)
-              editor.view.dispatch(tr)
-            }
-          })
-
           return true
         },
     }
-  },
-
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey('refHighlightRerender'),
-        appendTransaction: (transactions, oldState, newState) => {
-          // Check if we need to rerender
-          const shouldRerender = transactions.some(
-            tr => tr.getMeta('updateRefHighlight') || tr.getMeta('forceRerender') || tr.docChanged
-          )
-
-          if (shouldRerender) {
-            const tr = newState.tr
-            tr.setMeta('addToHistory', false)
-
-            // Instead of using setNodeMarkup, we'll recreate marks
-            newState.doc.descendants((node, pos) => {
-              if (node.isText && node.marks.length > 0) {
-                const refHighlightMark = node.marks.find(m => m.type.name === this.name)
-                if (refHighlightMark) {
-                  // Remove and re-add the mark to force a rerender
-                  tr.removeMark(pos, pos + node.nodeSize, this.type)
-                  tr.addMark(pos, pos + node.nodeSize, refHighlightMark)
-                }
-              }
-            })
-
-            return tr
-          }
-          return null
-        },
-      }),
-    ]
   },
 })

@@ -1,15 +1,10 @@
 import { EditorContent } from '@tiptap/react'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/utils'
-
 import { LinkMenu } from '@/components/menus'
-import { RefMenu } from '@/components/menus'
 import { MentionMenu } from '@/components/menus/MentionMenu'
-
 import { useBlockEditor } from '@/hooks/useBlockEditor'
-
 import '@/styles/index.css'
-
 import { Sidebar } from '@/components/Sidebar'
 import { RefView } from '@/components/RefView'
 import ImageBlockMenu from '@/extensions/ImageBlock/components/ImageBlockMenu'
@@ -28,25 +23,23 @@ export const BlockEditor = ({
   ydoc,
   provider,
   refView,
-  activeRef,
 }: {
   aiToken?: string
   ydoc: Y.Doc | null
   provider?: TiptapCollabProvider | null | undefined
   refView: RefViewState
-  activeRef: string | null
 }) => {
   const menuContainerRef = useRef(null)
   const leftSidebar = useSidebar()
   const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
-  // console.log('Current activeRef:', activeRef, 'refView.isOpen:', refView.isOpen, 'refView.refData:', refView.refData)
 
   useEffect(() => {
     if (editor) {
-      console.log('BlockEditor.tsx sent update request for activeRef in refHighlight:', activeRef)
-      editor.commands.updateRefHighlight(activeRef)
+      setTimeout(() => {
+        editor.commands.updateRefHighlightState()
+      }, 0)
     }
-  }, [activeRef])
+  }, [editor, refView.isOpen])
 
   if (!editor || !users) {
     return null
@@ -71,19 +64,13 @@ export const BlockEditor = ({
         <EditorContent editor={editor} className="flex-1 overflow-y-auto" />
         <ContentItemMenu editor={editor} />
         <LinkMenu editor={editor} appendTo={menuContainerRef} />
-        <RefMenu
-          editor={editor}
-          appendTo={menuContainerRef}
-          isRefViewOpen={refView.isOpen}
-          toggleRefView={() => refView.toggle({} as any)}
-        />
         <MentionMenu
           editor={editor}
           appendTo={menuContainerRef}
           isRefViewOpen={refView.isOpen}
           toggleRefView={refView.toggle}
         />
-        <TextMenu editor={editor} activeRef={activeRef} />
+        <TextMenu editor={editor} activeRef={refView.activeRef} />
         <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
         <TableRowMenu editor={editor} appendTo={menuContainerRef} />
         <TableColumnMenu editor={editor} appendTo={menuContainerRef} />
@@ -91,7 +78,6 @@ export const BlockEditor = ({
       </div>
       <RefView
         isOpen={refView.isOpen}
-        onClose={refView.close}
         editor={editor}
         refData={refView.refData}
         aiToken={aiToken}
