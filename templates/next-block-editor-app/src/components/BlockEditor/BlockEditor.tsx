@@ -1,5 +1,5 @@
 import { EditorContent } from '@tiptap/react'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { cn } from '@/lib/utils'
 
 import { LinkMenu } from '@/components/menus'
@@ -40,6 +40,13 @@ export const BlockEditor = ({
   const leftSidebar = useSidebar()
   const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
   // console.log('Current activeRef:', activeRef, 'refView.isOpen:', refView.isOpen, 'refView.refData:', refView.refData)
+
+  useEffect(() => {
+    if (editor) {
+      console.log('BlockEditor.tsx sent update request for activeRef in refHighlight:', activeRef)
+      editor.commands.updateRefHighlight(activeRef)
+    }
+  }, [activeRef])
 
   if (!editor || !users) {
     return null

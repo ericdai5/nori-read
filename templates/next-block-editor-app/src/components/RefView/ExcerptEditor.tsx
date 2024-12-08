@@ -121,11 +121,11 @@ export const ExcerptEditor = ({
 
     const syncContent = () => {
       try {
-        console.log('Syncing content, parentId:', parentId)
-        console.log('Main editor content:', mainEditor.getJSON())
+        // console.log('Syncing content, parentId:', parentId)
+        // console.log('Main editor content:', mainEditor.getJSON())
 
         const excerpt = findNodeById(mainEditor, parentId)
-        console.log('Found excerpt:', excerpt)
+        // console.log('Found excerpt:', excerpt)
 
         if (excerpt) {
           const nodeJson = excerpt.node.toJSON()

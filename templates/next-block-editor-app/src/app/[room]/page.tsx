@@ -62,7 +62,7 @@ export default function Document({ params }: { params: { room: string } }) {
   // Update activeRef when refView changes
   useEffect(() => {
     const newActiveRef = refView.isOpen ? refView.refData.id : null
-    console.log('Page: Updating activeRef from', activeRef, 'to', newActiveRef)
+    console.log('Page.tsx: Updating activeRef from', activeRef, 'to', newActiveRef)
     setActiveRef(newActiveRef)
   }, [refView.isOpen, refView.refData.id])
 

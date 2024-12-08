@@ -7,6 +7,7 @@ import { Extension } from '@tiptap/core'
 import { Plugin, PluginKey } from '@tiptap/pm/state'
 import { EditorView } from '@tiptap/pm/view'
 import { DecorationSet } from '@tiptap/pm/view'
+import { RefViewState } from '@/hooks/useRefView'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -58,12 +59,12 @@ export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightSt
         default: null,
         parseHTML: element => element.getAttribute('data-highlight-color'),
         renderHTML: attributes => {
+          console.log('attributes.refId', attributes.refId)
+          console.log('this.storage.activeRef', this.storage.activeRef)
+
           const isActive = this.storage.activeRef && this.storage.activeRef === attributes.refId
 
           console.log('isActive', isActive)
-          console.log('attributes.refId', attributes.refId)
-          console.log('this.storage.activeRef', this.storage.activeRef)
-          console.log('attributes.color', attributes.color)
 
           return {
             'data-highlight-color': attributes.color,
@@ -187,7 +188,7 @@ export const RefHighlight = Highlight.extend<RefHighlightOptions, RefHighlightSt
       updateRefHighlight:
         (activeRef: string | null) =>
         ({ editor }) => {
-          console.log('Updating activeRef to:', activeRef)
+          console.log('RefHighlight.tsx: Updating storage activeRef to:', activeRef)
           // Update storage
           editor.storage[this.name].activeRef = activeRef
           // Create transaction with meta info
