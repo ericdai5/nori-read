@@ -28,7 +28,6 @@ import { CustomMention } from '@/extensions/CustomMention'
 import { findNodeById } from '@/lib/utils/findNodeById'
 import { TextMenu } from '../menus/TextMenu/TextMenu'
 import { Node } from '@tiptap/core'
-import { RefHighlight } from '@/extensions/RefHighlight'
 
 interface TableEditorProps {
   activeRef: string | null
@@ -71,7 +70,6 @@ export const TableEditor = ({
   const tableEditor = useEditor({
     extensions: [
       TableDocument,
-      Text,
       Table.configure({
         resizable: true,
         lastColumnResizable: true,
@@ -79,9 +77,6 @@ export const TableEditor = ({
       }),
       TableRow,
       TableHeader,
-      RefHighlight.configure({
-        multicolor: true,
-      }),
       TableCell,
       ...ExtensionKit({
         provider,

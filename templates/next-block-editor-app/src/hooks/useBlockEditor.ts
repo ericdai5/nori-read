@@ -17,7 +17,6 @@ import { AiImage, AiWriter } from '@/extensions'
 import { Reference } from '@/extensions/Reference'
 import { TableFigure } from '@/extensions/TableFigure'
 import { CustomMention } from '@/extensions/CustomMention'
-import { RefHighlight } from '@/extensions/RefHighlight'
 
 declare global {
   interface Window {
@@ -70,9 +69,6 @@ export const useBlockEditor = ({
         }),
         Reference,
         TableFigure,
-        RefHighlight.configure({
-          multicolor: true,
-        }),
         CustomMention.configure({
           HTMLAttributes: {
             class:

@@ -9,6 +9,6 @@ export const findNodeById = (editor: Editor, id: string) => {
     return node.attrs && 'id' in node.attrs && node.attrs.id === id
   })
 
-  console.log('Found nodes with id:', id, result)
+  //   console.log('Found nodes with id:', id, result)
   return result[0] // Returns the first matching node
 }

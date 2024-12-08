@@ -19,27 +19,27 @@ import { EditorHeader } from './components/EditorHeader'
 import { TextMenu } from '../menus/TextMenu'
 import { ContentItemMenu } from '../menus/ContentItemMenu'
 import { useSidebar } from '@/hooks/useSidebar'
-import { useRefView } from '@/hooks/useRefView'
 import * as Y from 'yjs'
 import { TiptapCollabProvider } from '@hocuspocus/provider'
+import { RefViewState } from '@/hooks/useRefView'
 
 export const BlockEditor = ({
   aiToken,
   ydoc,
   provider,
+  refView,
+  activeRef,
 }: {
   aiToken?: string
   ydoc: Y.Doc | null
   provider?: TiptapCollabProvider | null | undefined
+  refView: RefViewState
+  activeRef: string | null
 }) => {
   const menuContainerRef = useRef(null)
   const leftSidebar = useSidebar()
-  const refView = useRefView()
   const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
-
-  const activeRef = refView.isOpen ? refView.refData.id : null
-
-  console.log('Current activeRef:', activeRef, 'refView.isOpen:', refView.isOpen, 'refView.refData:', refView.refData)
+  // console.log('Current activeRef:', activeRef, 'refView.isOpen:', refView.isOpen, 'refView.refData:', refView.refData)
 
   if (!editor || !users) {
     return null

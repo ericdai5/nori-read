@@ -1,1 +1,1 @@
-export * from './RefHighlight'
+export { RefHighlight } from './RefHighlight'

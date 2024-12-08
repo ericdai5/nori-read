@@ -22,7 +22,6 @@ import {
   FontFamily,
   FontSize,
   Heading,
-  Highlight,
   HorizontalRule,
   ImageBlock,
   Link,
@@ -48,6 +47,7 @@ import {
   TaskItem,
   TaskList,
   UniqueID,
+  RefHighlight,
 } from '.'
 
 import { ImageUpload } from './ImageUpload'
@@ -87,7 +87,7 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
     ],
     generateID: () => {
       const id = uuidv4()
-      console.log('Generated new uniqueID:', id)
+      // console.log('Generated new uniqueID:', id)
       return id
     },
     filterTransaction: transaction => !isChangeOrigin(transaction),
@@ -115,6 +115,7 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
   FontFamily,
   Color,
   TrailingNode,
+  RefHighlight,
   Link.configure({
     openOnClick: false,
   }),

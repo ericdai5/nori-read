@@ -24,10 +24,21 @@ export const useRefView = (): RefViewState => {
       isOpen,
       refData,
       open: () => setIsOpen(true),
-      close: () => setIsOpen(false),
+      close: () => {
+        console.log('Closing RefView')
+        setIsOpen(false)
+        setRefData({ id: '', label: '', tableUid: '', parentId: '' })
+      },
       toggle: (data: RefData) => {
-        setRefData(data)
-        setIsOpen(prev => !prev)
+        console.log('Toggling RefView with data:', data)
+        setIsOpen(prev => {
+          if (!prev) {
+            setRefData(data)
+          } else {
+            setRefData({ id: '', label: '', tableUid: '', parentId: '' })
+          }
+          return !prev
+        })
       },
     }
   }, [isOpen, refData])

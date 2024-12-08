@@ -12,6 +12,7 @@ import { Surface } from '@/components/ui/Surface'
 import { Toolbar } from '@/components/ui/Toolbar'
 import { Icon } from '@/components/ui/Icon'
 import { useCollaboration } from '@/hooks/useCollaboration'
+import { useRefView } from '@/hooks/useRefView'
 
 const useDarkmode = () => {
   // const [isDarkMode, setIsDarkMode] = useState<boolean>(
@@ -53,6 +54,18 @@ const useDarkmode = () => {
 export default function Document({ params }: { params: { room: string } }) {
   const { isDarkMode, darkMode, lightMode } = useDarkmode()
   const [aiToken, setAiToken] = useState<string | null | undefined>()
+  const refView = useRefView()
+
+  // Create a state for activeRef to force updates
+  const [activeRef, setActiveRef] = useState<string | null>(null)
+
+  // Update activeRef when refView changes
+  useEffect(() => {
+    const newActiveRef = refView.isOpen ? refView.refData.id : null
+    console.log('Page: Updating activeRef from', activeRef, 'to', newActiveRef)
+    setActiveRef(newActiveRef)
+  }, [refView.isOpen, refView.refData.id])
+
   const searchParams = useSearchParams()
   const providerState = useCollaboration({
     docId: params.room,
@@ -109,7 +122,13 @@ export default function Document({ params }: { params: { room: string } }) {
     <>
       {/* {DarkModeSwitcher} */}
       {/* uncomment to add darkmodeswitcher */}
-      <BlockEditor aiToken={aiToken ?? undefined} ydoc={providerState.yDoc} provider={providerState.provider} />
+      <BlockEditor
+        aiToken={aiToken ?? undefined}
+        ydoc={providerState.yDoc}
+        provider={providerState.provider}
+        refView={refView}
+        activeRef={activeRef}
+      />
     </>
   )
 }

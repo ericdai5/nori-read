@@ -13,12 +13,10 @@ import type { EditorUser } from '@/components/BlockEditor/types'
 import { Ai } from '@/extensions/Ai'
 import { AiImage, AiWriter } from '@/extensions'
 import { Reference } from '@/extensions/Reference'
-import { TableFigure } from '@/extensions/TableFigure'
 import { CustomMention } from '@/extensions/CustomMention'
 import { findNodeById } from '@/lib/utils/findNodeById'
 import { Transaction } from 'prosemirror-state'
 import { TextMenu } from '../menus/TextMenu/TextMenu'
-import { RefHighlight } from '@/extensions/RefHighlight'
 
 interface ExcerptEditorProps {
   activeRef: string | null
@@ -56,9 +54,6 @@ export const ExcerptEditor = ({
         provider,
       }),
       Reference,
-      RefHighlight.configure({
-        multicolor: true,
-      }),
       CustomMention.configure({
         HTMLAttributes: {
           class:
@@ -134,7 +129,7 @@ export const ExcerptEditor = ({
 
         if (excerpt) {
           const nodeJson = excerpt.node.toJSON()
-          console.log('Node JSON:', nodeJson)
+          // console.log('Node JSON:', nodeJson)
 
           excerptEditor.commands.setContent({
             type: 'doc',
@@ -222,6 +217,12 @@ export const ExcerptEditor = ({
       excerptEditor.off('update', handleExcerptUpdate)
     }
   }, [excerptEditor, mainEditor, parentId, isOpen])
+
+  useEffect(() => {
+    if (excerptEditor) {
+      excerptEditor.commands.updateRefHighlight(activeRef)
+    }
+  }, [activeRef, excerptEditor])
 
   if (!excerptEditor?.view || !isOpen) return null
 

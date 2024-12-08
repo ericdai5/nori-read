@@ -24,9 +24,9 @@ export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: 
   }, [editor])
 
   const handleView = useCallback(() => {
-    console.log('handleView called with:', { id, label, tableUid, parentId })
+    // console.log('handleView called with:', { id, label, tableUid, parentId })
     if (id && label && tableUid && parentId) {
-      console.log('Executing toggleRefView with:', { id, label, tableUid, parentId })
+      // console.log('Executing toggleRefView with:', { id, label, tableUid, parentId })
       toggleRefView?.({ id, label, tableUid, parentId })
     }
   }, [toggleRefView, id, label, tableUid, parentId])
