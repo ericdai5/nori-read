@@ -56,16 +56,6 @@ export default function Document({ params }: { params: { room: string } }) {
   const [aiToken, setAiToken] = useState<string | null | undefined>()
   const refView = useRefView()
 
-  // Create a state for activeRef to force updates
-  const [activeRef, setActiveRef] = useState<string | null>(null)
-
-  // Update activeRef when refView changes
-  useEffect(() => {
-    const newActiveRef = refView.isOpen ? refView.refData.id : null
-    console.log('Page.tsx: Updating activeRef from', activeRef, 'to', newActiveRef)
-    setActiveRef(newActiveRef)
-  }, [refView.isOpen, refView.refData.id])
-
   const searchParams = useSearchParams()
   const providerState = useCollaboration({
     docId: params.room,
@@ -127,7 +117,6 @@ export default function Document({ params }: { params: { room: string } }) {
         ydoc={providerState.yDoc}
         provider={providerState.provider}
         refView={refView}
-        activeRef={activeRef}
       />
     </>
   )

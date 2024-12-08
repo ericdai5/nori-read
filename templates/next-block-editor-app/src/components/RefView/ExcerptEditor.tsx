@@ -12,7 +12,6 @@ import { randomElement } from '@/lib/utils'
 import type { EditorUser } from '@/components/BlockEditor/types'
 import { Ai } from '@/extensions/Ai'
 import { AiImage, AiWriter } from '@/extensions'
-import { Reference } from '@/extensions/Reference'
 import { CustomMention } from '@/extensions/CustomMention'
 import { findNodeById } from '@/lib/utils/findNodeById'
 import { Transaction } from 'prosemirror-state'
@@ -53,7 +52,6 @@ export const ExcerptEditor = ({
       ...ExtensionKit({
         provider,
       }),
-      Reference,
       CustomMention.configure({
         HTMLAttributes: {
           class:

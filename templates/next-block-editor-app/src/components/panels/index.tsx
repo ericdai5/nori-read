@@ -1,6 +1,4 @@
 export * from './Colorpicker'
 export * from './LinkEditorPanel'
 export * from './LinkPreviewPanel'
-export * from './RefEditorPanel'
-export * from './RefPreviewPanel'
 export * from './CMentionPreview'

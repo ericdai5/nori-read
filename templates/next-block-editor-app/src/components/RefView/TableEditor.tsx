@@ -22,7 +22,6 @@ import { randomElement } from '@/lib/utils'
 import type { EditorUser } from '@/components/BlockEditor/types'
 import { Ai } from '@/extensions/Ai'
 import { AiImage, AiWriter } from '@/extensions'
-import { Reference } from '@/extensions/Reference'
 import { TableFigure } from '@/extensions/TableFigure'
 import { CustomMention } from '@/extensions/CustomMention'
 import { findNodeById } from '@/lib/utils/findNodeById'
@@ -81,7 +80,6 @@ export const TableEditor = ({
       ...ExtensionKit({
         provider,
       }).filter(ext => ext.name !== 'doc' && !ext.name.startsWith('table')),
-      Reference,
       CustomMention.configure({
         HTMLAttributes: {
           class:

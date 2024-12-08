@@ -53,6 +53,7 @@ import {
 import { ImageUpload } from './ImageUpload'
 import { TableOfContentsNode } from './TableOfContentsNode'
 import { isChangeOrigin } from '@tiptap/extension-collaboration'
+import { useRefView } from '@/hooks/useRefView'
 interface ExtensionKitProps {
   provider?: HocuspocusProvider | null
 }
@@ -82,7 +83,6 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
       'tableHeading',
       'tableCell',
       'tableRow',
-      'reference',
       'custom-mention',
     ],
     generateID: () => {
