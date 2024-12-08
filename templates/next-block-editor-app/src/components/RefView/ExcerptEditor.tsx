@@ -21,6 +21,7 @@ import { TextMenu } from '../menus/TextMenu/TextMenu'
 import { RefHighlight } from '@/extensions/RefHighlight'
 
 interface ExcerptEditorProps {
+  activeRef: string | null
   mainEditor: Editor
   parentId: string
   mounted: boolean
@@ -28,6 +29,7 @@ interface ExcerptEditorProps {
 }
 
 export const ExcerptEditor = ({
+  activeRef,
   mainEditor,
   parentId,
   mounted,
@@ -225,7 +227,7 @@ export const ExcerptEditor = ({
 
   return (
     <div className="flex flex-col w-full h-full px-6">
-      <TextMenu editor={excerptEditor} />
+      <TextMenu editor={excerptEditor} activeRef={activeRef} />
       <EditorContent className="py-6" editor={excerptEditor} />
       <div className="min-h-[56px]"></div>
     </div>

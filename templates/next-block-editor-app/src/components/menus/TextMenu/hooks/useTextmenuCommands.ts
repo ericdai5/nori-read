@@ -2,7 +2,7 @@ import type { Language } from '@/extensions/Ai'
 import { Editor } from '@tiptap/react'
 import { useCallback } from 'react'
 
-export const useTextmenuCommands = (editor: Editor) => {
+export const useTextmenuCommands = (editor: Editor, activeRef: string | null) => {
   const onBold = useCallback(() => editor.chain().focus().toggleBold().run(), [editor])
   const onItalic = useCallback(() => editor.chain().focus().toggleItalic().run(), [editor])
   const onStrike = useCallback(() => editor.chain().focus().toggleStrike().run(), [editor])
@@ -22,7 +22,10 @@ export const useTextmenuCommands = (editor: Editor) => {
 
   // const onChangeHighlight = useCallback((color: string) => editor.chain().setHighlight({ color }).run(), [editor])
   // const onClearHighlight = useCallback(() => editor.chain().focus().unsetHighlight().run(), [editor])
-  const onChangeHighlight = useCallback((color: string) => editor.chain().setRefHighlight({ color }).run(), [editor])
+  const onChangeHighlight = useCallback(
+    (color: string) => editor.chain().setRefHighlight({ color, refId: activeRef }).run(),
+    [editor, activeRef]
+  )
   const onClearHighlight = useCallback(() => editor.chain().focus().unsetRefHighlight().run(), [editor])
 
   // AI Commands

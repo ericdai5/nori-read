@@ -33,10 +33,13 @@ export const BlockEditor = ({
   provider?: TiptapCollabProvider | null | undefined
 }) => {
   const menuContainerRef = useRef(null)
-
   const leftSidebar = useSidebar()
   const refView = useRefView()
   const { editor, users, collabState } = useBlockEditor({ aiToken, ydoc, provider })
+
+  const activeRef = refView.isOpen ? refView.refData.id : null
+
+  console.log('Current activeRef:', activeRef, 'refView.isOpen:', refView.isOpen, 'refView.refData:', refView.refData)
 
   if (!editor || !users) {
     return null
@@ -73,7 +76,7 @@ export const BlockEditor = ({
           isRefViewOpen={refView.isOpen}
           toggleRefView={refView.toggle}
         />
-        <TextMenu editor={editor} />
+        <TextMenu editor={editor} activeRef={activeRef} />
         <ColumnsMenu editor={editor} appendTo={menuContainerRef} />
         <TableRowMenu editor={editor} appendTo={menuContainerRef} />
         <TableColumnMenu editor={editor} appendTo={menuContainerRef} />

@@ -6,7 +6,7 @@ import { Editor } from '@tiptap/core'
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     refHighlight: {
-      setRefHighlight: (attributes?: { color: string }) => ReturnType
+      setRefHighlight: (attributes?: { color: string; refId?: string | null }) => ReturnType
       unsetRefHighlight: () => ReturnType
     }
   }
@@ -18,6 +18,15 @@ export const RefHighlight = Highlight.extend({
   addAttributes() {
     return {
       ...this.parent?.(),
+      refId: {
+        default: null,
+        parseHTML: element => element.getAttribute('data-ref-id'),
+        renderHTML: attributes => {
+          return {
+            'data-ref-id': attributes.refId,
+          }
+        },
+      },
       backgroundColor: {
         default: null,
         parseHTML: element => element.getAttribute('data-background-color'),
@@ -40,6 +49,9 @@ export const RefHighlight = Highlight.extend({
       setRefHighlight:
         attributes =>
         ({ chain }) => {
+          // Add debug log
+          console.log('setRefHighlight called with attributes:', attributes)
+
           // Handle both table cells and regular text
           return chain()
             .command(({ tr, state, dispatch }) => {
@@ -67,6 +79,7 @@ export const RefHighlight = Highlight.extend({
                     tr.setNodeMarkup(start + cellPos, null, {
                       ...node.attrs,
                       backgroundColor: attributes?.color,
+                      refId: attributes?.refId,
                     })
                   }
                 })
@@ -77,7 +90,10 @@ export const RefHighlight = Highlight.extend({
               // Default highlight behavior for regular text
               return false
             })
-            .setHighlight(attributes)
+            .setMark(this.name, {
+              color: attributes?.color,
+              refId: attributes?.refId,
+            })
             .run()
         },
 

@@ -31,6 +31,7 @@ import { Node } from '@tiptap/core'
 import { RefHighlight } from '@/extensions/RefHighlight'
 
 interface TableEditorProps {
+  activeRef: string | null
   mainEditor: Editor
   tableUid: string
   mounted: boolean
@@ -44,6 +45,7 @@ const TableDocument = Document.extend({
 })
 
 export const TableEditor = ({
+  activeRef,
   mainEditor,
   tableUid,
   mounted,
@@ -243,7 +245,7 @@ export const TableEditor = ({
 
   return (
     <div className="flex w-full h-full overflow-hidden justify-center items-center" ref={menuContainerRef}>
-      <TextMenu editor={tableEditor} />
+      <TextMenu editor={tableEditor} activeRef={activeRef} />
       <TableColumnMenu editor={tableEditor} appendTo={menuContainerRef} />
       <TableRowMenu editor={tableEditor} appendTo={menuContainerRef} />
       <div className="flex w-full justify-center items-center">

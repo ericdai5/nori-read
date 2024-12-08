@@ -60,6 +60,7 @@ export const RefView = memo(
           <div className="flex flex-col w-auto h-full">
             <div className="flex h-full w-full flex-1 p-6 justify-center border-b border-b-neutral-200 dark:border-b-neutral-800">
               <TableEditor
+                activeRef={id}
                 mainEditor={mainEditor}
                 tableUid={tableUid}
                 mounted={mounted}
@@ -73,6 +74,7 @@ export const RefView = memo(
               <div className="z-10 fixed bottom-[216px] w-[42rem] h-6 bg-gradient-to-b from-white via-white via-50% to-transparent"></div>
               <div className="w-full overflow-y-auto">
                 <ExcerptEditor
+                  activeRef={id}
                   mainEditor={mainEditor}
                   parentId={parentId}
                   mounted={mounted}

@@ -25,10 +25,11 @@ const MemoContentTypePicker = memo(ContentTypePicker)
 
 export type TextMenuProps = {
   editor: Editor
+  activeRef: string | null
 }
 
-export const TextMenu = ({ editor }: TextMenuProps) => {
-  const commands = useTextmenuCommands(editor)
+export const TextMenu = ({ editor, activeRef }: TextMenuProps) => {
+  const commands = useTextmenuCommands(editor, activeRef)
   const states = useTextmenuStates(editor)
   const blockOptions = useTextmenuContentTypes(editor)
 
@@ -107,28 +108,30 @@ export const TextMenu = ({ editor }: TextMenuProps) => {
         <MemoButton tooltip="Code" tooltipShortcut={['Mod', 'E']} onClick={commands.onCode} active={states.isCode}>
           <Icon name="Code" />
         </MemoButton>
-        <MemoButton tooltip="Code block" onClick={commands.onCodeBlock}>
+        {/* <MemoButton tooltip="Code block" onClick={commands.onCodeBlock}>
           <Icon name="FileCode" />
-        </MemoButton>
+        </MemoButton> */}
         {/* Button to add link */}
         {/* <EditLinkPopover onSetLink={commands.onLink} /> */}
-        <EditRefPopover onSetRef={commands.onRef} />
-        <Popover.Root>
-          <Popover.Trigger asChild>
-            <MemoButton active={!!states.currentHighlight} tooltip="Highlight text">
-              <Icon name="Highlighter" />
-            </MemoButton>
-          </Popover.Trigger>
-          <Popover.Content side="top" sideOffset={8} asChild>
-            <Surface className="p-1">
-              <MemoColorPicker
-                color={states.currentHighlight}
-                onChange={commands.onChangeHighlight}
-                onClear={commands.onClearHighlight}
-              />
-            </Surface>
-          </Popover.Content>
-        </Popover.Root>
+        {/* <EditRefPopover onSetRef={commands.onRef} /> */}
+        {activeRef && (
+          <Popover.Root>
+            <Popover.Trigger asChild>
+              <MemoButton active={!!states.currentHighlight} tooltip="Highlight text">
+                <Icon name="Highlighter" />
+              </MemoButton>
+            </Popover.Trigger>
+            <Popover.Content side="top" sideOffset={8} asChild>
+              <Surface className="p-1">
+                <MemoColorPicker
+                  color={states.currentHighlight}
+                  onChange={commands.onChangeHighlight}
+                  onClear={commands.onClearHighlight}
+                />
+              </Surface>
+            </Popover.Content>
+          </Popover.Root>
+        )}
         {/* Button to change text color */}
         {/* <Popover.Root>
           <Popover.Trigger asChild>
