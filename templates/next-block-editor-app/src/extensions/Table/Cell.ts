@@ -1,7 +1,19 @@
 import { mergeAttributes, Node } from '@tiptap/core'
 import { Plugin } from '@tiptap/pm/state'
 import { Decoration, DecorationSet } from '@tiptap/pm/view'
-import { getCellsInColumn, isRowSelected, selectRow } from './utils'
+import { getCellsInColumn, isRowSelected, selectRow, getCellsInTable } from './utils'
+
+// Add command type declaration
+declare module '@tiptap/core' {
+  interface Commands<ReturnType> {
+    tableCell: {
+      /**
+       * Update background colors of multiple table cells
+       */
+      updateCellColors: (updates: { id: string; color: string }[]) => ReturnType
+    }
+  }
+}
 
 export interface TableCellOptions {
   HTMLAttributes: Record<string, any>
@@ -10,7 +22,7 @@ export interface TableCellOptions {
 export const TableCell = Node.create<TableCellOptions>({
   name: 'tableCell',
 
-  content: 'block+', // TODO: Do not allow table in table
+  content: 'block+',
 
   tableRole: 'cell',
 
@@ -49,6 +61,15 @@ export const TableCell = Node.create<TableCellOptions>({
           const backgroundColor = element.getAttribute('data-background-color')
           return backgroundColor
         },
+        renderHTML: attributes => {
+          if (!attributes.backgroundColor) {
+            return {}
+          }
+          return {
+            'data-background-color': attributes.backgroundColor,
+            style: `background-color: ${attributes.backgroundColor}`,
+          }
+        },
       },
       colspan: {
         default: 1,
@@ -80,6 +101,39 @@ export const TableCell = Node.create<TableCellOptions>({
       style: {
         default: null,
       },
+    }
+  },
+
+  addCommands() {
+    return {
+      updateCellColors:
+        updates =>
+        ({ tr, state, dispatch }) => {
+          if (!dispatch) return false
+
+          const updateMap = new Map(updates.map(update => [update.id, update.color]))
+          const cells = getCellsInTable(state.selection)
+          if (!cells) return false
+
+          let hasChanges = false
+
+          cells.forEach(({ node, pos }) => {
+            const cellId = node?.attrs.id
+            if (cellId && updateMap.has(cellId)) {
+              const newColor = updateMap.get(cellId)
+
+              // Only update if color is different
+              if (newColor !== node.attrs.backgroundColor) {
+                tr.setNodeAttribute(pos, 'backgroundColor', newColor)
+                hasChanges = true
+              }
+            }
+          })
+
+          if (!hasChanges) return false
+
+          return true
+        },
     }
   },
 

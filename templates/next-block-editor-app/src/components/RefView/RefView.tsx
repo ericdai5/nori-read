@@ -82,13 +82,6 @@ export const RefView = memo(({ editor: mainEditor, isOpen, refData, aiToken, ydo
                 provider={provider}
               />
             </div>
-            <Button
-              variant="ghost"
-              buttonSize="icon"
-              className="z-50 fixed font-sans border p-0 bg-white hover:bg-neutral-50 border-neutral-200 bottom-6 right-6"
-            >
-              <Icon name="Sparkles" />
-            </Button>
             <div className="z-10 fixed bottom-0 w-[42rem] h-16 bg-gradient-to-b from-transparent via-white via-50% to-white"></div>
           </div>
         </div>

@@ -28,7 +28,8 @@
       }
 
       &[data-background-color] {
-        background-color: attr(data-background-color);
+        background-color: var(--background-color);
+        transition: background-color 0.2s ease;
       }
     }
 
