@@ -27,16 +27,61 @@ export const MentionMenu = ({ editor, appendTo, isRefViewOpen, toggleRefView }: 
 
   const handleView = useCallback(() => {
     if (id && label && tableUid && parentId) {
-      console.log('MentionMenu.tsx: data.id:', id)
       if (isRefViewOpen) {
-        // If we're closing the current ref
-        editor.commands.updateRefHighlight('')
+        console.log('MentionMenu.tsx: Starting close sequence')
+        console.log('Current state:', {
+          isRefViewOpen,
+          id,
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
+
+        // First update the storage
+        editor.commands.updateRefHighlight(null)
+        console.log('Storage update result:', {
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
+
+        // Then update the highlight states
+        editor.commands.updateRefHighlightState()
+        console.log('State update result:', {
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
+
+        // Finally toggle the view
+        console.log('Toggling ref view to close')
+        toggleRefView?.({ id, label, tableUid, parentId }, null)
+
+        console.log('Final state after close:', {
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
       } else {
-        // If we're opening a new ref or switching refs
+        console.log('MentionMenu.tsx: Starting open sequence')
+        console.log('Current state:', {
+          isRefViewOpen,
+          id,
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
+
+        // First update the storage
         editor.commands.updateRefHighlight(id)
+        console.log('Storage update result:', {
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
+
+        // Then update the highlight states
+        editor.commands.updateRefHighlightState()
+        console.log('State update result:', {
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
+
+        // Finally toggle the view
+        console.log('Toggling ref view to open')
+        toggleRefView?.({ id, label, tableUid, parentId }, id)
+
+        console.log('Final state after open:', {
+          storageActiveRef: editor.storage.refHighlight?.activeRef,
+        })
       }
-      console.log('Executing toggleRefView with:', { id })
-      toggleRefView?.({ id, label, tableUid, parentId }, id)
     }
   }, [id, label, tableUid, parentId, editor, isRefViewOpen, toggleRefView])
 

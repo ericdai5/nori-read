@@ -73,11 +73,11 @@ export const useTextmenuCommands = (editor: Editor, activeRef: string | null) =>
     [editor]
   )
 
-  // Updated setRef implementation
-  const onRef = useCallback(
-    (ref: string, sentence: string) => editor.chain().focus().setRef({ id: ref, sentence: sentence }).run(),
-    [editor]
-  )
+  // // Updated setRef implementation
+  // const onRef = useCallback(
+  //   (ref: string, sentence: string) => editor.chain().focus().setRef({ id: ref, sentence: sentence }).run(),
+  //   [editor]
+  // )
 
   const onSetFont = useCallback(
     (font: string) => {
@@ -128,6 +128,6 @@ export const useTextmenuCommands = (editor: Editor, activeRef: string | null) =>
     // onTone,
     // onTranslate,
     onLink,
-    onRef,
+    // onRef,
   }
 }

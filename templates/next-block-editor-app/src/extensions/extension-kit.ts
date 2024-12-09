@@ -74,17 +74,7 @@ export const ExtensionKit = ({ provider }: ExtensionKitProps) => [
   // IMPORTANT:unique ID configuration
   UniqueID.configure({
     attributeName: 'id',
-    types: [
-      'paragraph',
-      'heading',
-      'blockquote',
-      'codeBlock',
-      'table',
-      'tableHeading',
-      'tableCell',
-      'tableRow',
-      'custom-mention',
-    ],
+    types: ['paragraph', 'heading', 'blockquote', 'codeBlock', 'table', 'tableHeading', 'tableCell', 'tableRow'],
     generateID: () => {
       const id = uuidv4()
       // console.log('Generated new uniqueID:', id)
