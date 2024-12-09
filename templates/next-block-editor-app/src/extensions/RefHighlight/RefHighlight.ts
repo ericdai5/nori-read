@@ -56,9 +56,9 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
         default: null,
         parseHTML: element => element.getAttribute('data-highlight-color'),
         renderHTML: attributes => {
-          console.log('RefHighlight.tsx: refId:', attributes.refId, 'activeRef:', this.storage.activeRef)
+          console.log('RefHighlight.tsx: state:', attributes.state)
 
-          const isActive = this.storage.activeRef === attributes.refId
+          const isActive = attributes.state === 'on'
 
           console.log('isActive', isActive)
 
@@ -82,7 +82,7 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
         },
       },
       state: {
-        default: '0',
+        default: 'on',
         parseHTML: element => element.getAttribute('data-state'),
         renderHTML: attributes => ({
           'data-state': attributes.state,
@@ -96,9 +96,12 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
       ...this.parent?.(),
       setRefHighlight:
         attributes =>
-        ({ chain }) => {
+        ({ chain, editor }) => {
           // Add debug log
           console.log('setRefHighlight called with attributes:', attributes)
+
+          // const activeRef = editor.storage.refHighlight?.activeRef
+          // const actualRef = attributes?.refId === activeRef ? 'on' : 'off'
 
           // Handle both table cells and regular text
           return chain()
@@ -127,7 +130,7 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
                     tr.setNodeMarkup(start + cellPos, null, {
                       ...node.attrs,
                       backgroundColor: attributes?.color,
-                      refId: attributes?.refId,
+                      refId: editor.storage.refHighlight?.activeRef,
                     })
                   }
                 })
@@ -140,9 +143,10 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
             })
             .setMark(this.name, {
               color: attributes?.color,
-              refId: attributes?.refId,
-              state: '0',
+              refId: editor.storage.refHighlight?.activeRef,
+              state: 'on',
             })
+            .updateRefHighlightState()
             .run()
         },
 
@@ -185,6 +189,7 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
               // Default behavior for regular text
               return false
             })
+            .updateRefHighlightState()
             .unsetHighlight()
             .run()
         },
@@ -192,29 +197,42 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
       updateRefHighlightState:
         () =>
         ({ chain, editor }) => {
+          console.log('Updating highlight states with activeRef:', editor.storage.refHighlight?.activeRef)
           return chain()
             .command(({ tr, state, dispatch }) => {
               if (!dispatch) return true
 
               const { doc, schema } = state
-              let found = false
+              const activeRef = editor.storage.refHighlight?.activeRef
 
+              let hasChanges = false
+              // Process all nodes in the document
               doc.descendants((node, pos) => {
-                if (found) return false
                 const marks = node.marks.filter(mark => mark.type.name === 'refHighlight')
                 if (marks.length > 0) {
-                  const mark = marks[0]
-                  const newState = mark.attrs.state === '0' ? '1' : '0'
-                  tr.addMark(
-                    pos,
-                    pos + node.nodeSize,
-                    schema.marks.refHighlight.create({ ...mark.attrs, state: newState })
-                  )
-                  found = true
-                  dispatch(tr)
-                  return false
+                  marks.forEach(mark => {
+                    console.log('Processing mark:', {
+                      refId: mark.attrs.refId,
+                      currentState: mark.attrs.state,
+                    })
+                    console.log('Current activeRef:', activeRef)
+                    const newState = mark.attrs.refId === activeRef ? 'on' : 'off'
+                    console.log('New state:', newState)
+                    tr.addMark(
+                      pos,
+                      pos + node.nodeSize,
+                      schema.marks.refHighlight.create({
+                        ...mark.attrs,
+                        state: newState,
+                      })
+                    )
+                  })
                 }
               })
+
+              if (hasChanges) {
+                dispatch(tr)
+              }
 
               return true
             })
@@ -225,8 +243,10 @@ export const RefHighlight = Highlight.extend<RefHighlightStorage>({
         (activeRef: string | null) =>
         ({ editor }) => {
           console.log('RefHighlight.tsx: Updating storage activeRef to:', activeRef)
+          // Ensure we're always dealing with string | null, never empty string
+          const normalizedRef = activeRef === '' ? null : activeRef
           editor.storage[this.name] = editor.storage[this.name] || { activeRef: null }
-          editor.storage[this.name].activeRef = activeRef
+          editor.storage[this.name].activeRef = normalizedRef
           return true
         },
     }

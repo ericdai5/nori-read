@@ -22,23 +22,25 @@ export const useRefView = (): RefViewState => {
   const toggle = useCallback(
     (data: RefData, activeRef: string | null) => {
       console.log('Toggling RefView with id:', data.id, 'activeRef:', activeRef)
-      // If we're opening the ref view, set the active ref first
+
       if (!isOpen) {
+        // Opening the ref view
         setActiveRef(activeRef)
         setRefData(data)
         setIsOpen(true)
-      } else if (isOpen && data.id == activeRef) {
-        // If the ref view is closed and we're opening a new ref, open the ref view
-        setActiveRef('')
+      } else if (isOpen && activeRef === null) {
+        // Explicitly closing the ref view
+        setActiveRef(null)
         setIsOpen(false)
         setRefData({ id: '', label: '', tableUid: '', parentId: '' })
-      } else if (isOpen && data.id !== activeRef) {
+      } else if (isOpen && activeRef !== null) {
+        // Switching to a different ref
         setActiveRef(activeRef)
         setRefData(data)
         setIsOpen(true)
       }
     },
-    [isOpen, activeRef, refData]
+    [isOpen]
   )
 
   return useMemo(() => {

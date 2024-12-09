@@ -39,7 +39,7 @@ export const BlockEditor = ({
         editor.commands.updateRefHighlightState()
       }, 0)
     }
-  }, [editor, refView.isOpen])
+  }, [editor, refView.isOpen, refView.activeRef])
 
   if (!editor || !users) {
     return null
