@@ -8,7 +8,7 @@ import { TableRow } from '@/extensions/Table'
 import { TableHeader } from '@/extensions/Table'
 import { findTableNodeById } from '@/lib/utils/findTable'
 import { TableColumnMenu, TableRowMenu } from '@/extensions/Table/menus'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useCallback } from 'react'
 import { Transaction } from 'prosemirror-state'
 import { EditorContent, useEditor, useEditorState } from '@tiptap/react'
 import Collaboration from '@tiptap/extension-collaboration'
@@ -27,6 +27,10 @@ import { CustomMention } from '@/extensions/CustomMention'
 import { findNodeById } from '@/lib/utils/findNodeById'
 import { TextMenu } from '../menus/TextMenu/TextMenu'
 import { Node } from '@tiptap/core'
+import { RefHighlight } from '@/extensions/RefHighlight'
+import { Button } from '../ui/Button'
+import { Icon } from '@/components/ui/Icon'
+import { analyzeTableAndHighlights } from '@/lib/utils/chatgpt'
 
 interface TableEditorProps {
   activeRef: string | null
@@ -41,6 +45,35 @@ const TableDocument = Document.extend({
 }).configure({
   content: 'table',
 })
+
+interface ColorUpdate {
+  id: string
+  color: string
+}
+
+interface TableNode {
+  attrs: {
+    id: string
+    name: string
+    refs: any[]
+  }
+  content?: Array<{
+    attrs: {
+      id: string
+    }
+    content?: Array<{
+      attrs: {
+        id: string
+      }
+      content: any
+    }>
+  }>
+}
+
+interface HighlightInfo {
+  text: string
+  color: string
+}
 
 export const TableEditor = ({
   activeRef,
@@ -234,10 +267,128 @@ export const TableEditor = ({
     }
   }, [tableEditor, mainEditor, tableUid, isOpen])
 
+  const updateCellColors = useCallback(
+    (updates: ColorUpdate[]) => {
+      if (!tableEditor) return
+      tableEditor.commands.updateCellColors(updates)
+    },
+    [tableEditor]
+  )
+
+  // Add new function to export table JSON
+  const exportTableJSON = useCallback(() => {
+    if (!mainEditor) return null
+    const table = findTableNodeById(mainEditor.state.doc, tableUid)
+    if (!table) {
+      console.log('No table found with ID:', tableUid)
+      return null
+    }
+    const nodeJson = table.node.toJSON() as TableNode
+    // Create simplified table structure
+    const simplifiedTable = {
+      type: 'table',
+      attrs: {
+        id: nodeJson.attrs.id,
+        name: nodeJson.attrs.name,
+        refs: nodeJson.attrs.refs || [],
+      },
+      content: nodeJson.content?.map(row => ({
+        type: 'tableRow',
+        attrs: {
+          id: row.attrs.id,
+        },
+        content: row.content?.map(cell => ({
+          type: 'tableCell',
+          attrs: {
+            id: cell.attrs.id,
+          },
+          content: cell.content,
+        })),
+      })),
+    }
+    return simplifiedTable
+  }, [mainEditor, tableUid])
+
+  const findMatchingHighlights = useCallback((): HighlightInfo[] => {
+    if (!mainEditor) return []
+
+    const matches: HighlightInfo[] = []
+
+    // Process all nodes in the main editor
+    mainEditor.state.doc.descendants((node, pos) => {
+      if (node.isText && node.marks.length > 0) {
+        // Find refHighlight marks that match activeRef
+        const refHighlightMarks = node.marks.filter(
+          mark => mark.type.name === 'refHighlight' && mark.attrs.refId === activeRef
+        )
+
+        if (refHighlightMarks.length > 0) {
+          refHighlightMarks.forEach(mark => {
+            matches.push({
+              text: node.text || '',
+              color: mark.attrs.color || 'transparent',
+            })
+          })
+        }
+      }
+    })
+
+    return matches
+  }, [mainEditor, activeRef]) // Remove tableUid since we're searching the entire document
+
+  // useEffect(() => {
+  //   if (tableEditor) {
+  //     tableEditor.commands.updateRefHighlight(activeRef)
+  //     tableEditor.commands.updateRefHighlightState()
+  //   }
+  // }, [activeRef, tableEditor])
+
+  // Add state for showing results
+  const [showResults, setShowResults] = useState(false)
+
+  // Add handler for button click
+  const handleShowResults = useCallback(async () => {
+    const highlights = findMatchingHighlights()
+    const tableData = exportTableJSON()
+
+    try {
+      const analysis = await analyzeTableAndHighlights(highlights, tableData)
+
+      // Log the analysis results
+      console.log('=== Table Analysis Results ===')
+      console.log('AI Suggestions:', analysis.suggestions)
+      console.log('Explanation:', analysis.explanation)
+
+      // Optionally, you could automatically apply the suggested colors
+      if (analysis.suggestions.length > 0) {
+        const updates = analysis.suggestions
+          .filter(s => s.confidence > 0.7) // Only apply high-confidence suggestions
+          .map(s => ({
+            id: s.cellId,
+            color: s.color,
+          }))
+
+        if (updates.length > 0) {
+          updateCellColors(updates)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to analyze table:', error)
+    }
+  }, [findMatchingHighlights, exportTableJSON, updateCellColors])
+
   if (!tableEditor?.view || !isOpen) return null
 
   return (
     <div className="flex w-full h-full overflow-hidden justify-center items-center" ref={menuContainerRef}>
+      <Button
+        variant="ghost"
+        buttonSize="icon"
+        className="z-50 fixed font-sans border p-0 bg-white hover:bg-neutral-50 border-neutral-200 top-4 right-4"
+        onClick={handleShowResults}
+      >
+        <Icon name="Sparkles" />
+      </Button>
       <TextMenu editor={tableEditor} activeRef={activeRef} />
       <TableColumnMenu editor={tableEditor} appendTo={menuContainerRef} />
       <TableRowMenu editor={tableEditor} appendTo={menuContainerRef} />

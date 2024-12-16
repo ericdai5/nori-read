@@ -2,6 +2,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'rea
 import type { SuggestionOptions, SuggestionProps } from '@tiptap/suggestion'
 import type { MentionSuggestion } from '@/extensions/CustomMention/suggestion'
 import { getParentNodeId } from '@/lib/utils/getParentNodeId'
+import { v4 as uuidv4 } from 'uuid'
 
 export type MentionListRef = {
   // For convenience using this SuggestionList from within the
@@ -18,7 +19,7 @@ export default forwardRef<MentionListRef>((props: any, ref) => {
 
     if (item) {
       const parentId = getParentNodeId(props.editor.state.selection)
-      props.command({ label: item.label, tableUid: item.id, parentId: parentId })
+      props.command({ id: uuidv4(), label: item.label, tableUid: item.id, parentId: parentId })
     }
   }
 
