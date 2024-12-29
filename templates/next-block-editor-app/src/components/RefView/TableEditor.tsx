@@ -98,6 +98,7 @@ export const TableEditor = ({
   )
 
   const menuContainerRef = useRef<HTMLDivElement>(null)
+  const number = 1
 
   const tableEditor = useEditor({
     extensions: [
