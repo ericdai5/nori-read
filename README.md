@@ -2,9 +2,7 @@
 
 This project was developed in the Fall of 2024 as a final project for CIS 7000 (Interactive Reading), an advanced seminar in human-centered computing at Penn. 
 
-I built Nori, an augmented reading and authoring interface designed to provide just-in-time overviews of data-table references. You can read a presentation for this project at the following link:
-
-[Nori Presentation](https://www.figma.com/proto/EgYdSyMKGR1Ype1L0CklP7/Nori?page-id=303%3A2&node-id=303-7&viewport=1176%2C418%2C0.11&t=783EQNEu3UGCkwhx-1&scaling=contain&content-scaling=fixed)
+I built Nori, an augmented reading and authoring interface designed to provide just-in-time overviews of data-table references. You can read a presentation for this project at [this link](https://www.figma.com/proto/EgYdSyMKGR1Ype1L0CklP7/Nori?page-id=303%3A2&node-id=303-7&viewport=1176%2C418%2C0.11&t=783EQNEu3UGCkwhx-1&scaling=contain&content-scaling=fixed).
 
 Nori leverages large language models (LLMs) to generate color-coded annotations highlighting key insights to bridge the gap between textual references and data tables while ensuring context preservation and fostering human-interface collaboration.
 
