@@ -19,3 +19,9 @@ npm install
 # Launch the development server
 npm run dev
 ```
+
+Please add an env.local file with a OpenAI API Key in the following style
+```bash
+NEXT_PUBLIC_OPENAI_API_KEY= *add OpenAI API Key here*
+```
+
